@@ -141,8 +141,19 @@
         {{/each}}
       </p>
     {{/if}}
+    
+    <h2>{{__ "REQUEST"}}</h2> 
+    {{subTemplate "article-param-block" params=article.header _hasType=_hasTypeInHeaderFields section="header"}}
+    {{subTemplate "article-param-block" params=article.parameter _hasType=_hasTypeInParameterFields section="parameter"}}
+
+    {{#if article.success.length compare=0}}
+      <h2>{{__ "RESPONSE"}}</h2>
+    {{/if}}
+    {{subTemplate "article-param-block" params=article.success _hasType=_hasTypeInSuccessFields section="success"}}
+    {{subTemplate "article-param-block" params=article.error _col1="Name" _hasType=_hasTypeInErrorFields section="error"}}
 
     {{#if_gt article.examples.length compare=0}}
+      <h2>{{__ "EXAMPLE"}}</h2>
       <ul class="nav nav-tabs nav-tabs-examples">
         {{#each article.examples}}
           <li{{#if_eq @index compare=0}} class="active"{{/if_eq}}>
@@ -160,10 +171,23 @@
       </div>
     {{/if_gt}}
 
-    {{subTemplate "article-param-block" params=article.header _hasType=_hasTypeInHeaderFields section="header"}}
-    {{subTemplate "article-param-block" params=article.parameter _hasType=_hasTypeInParameterFields section="parameter"}}
-    {{subTemplate "article-param-block" params=article.success _hasType=_hasTypeInSuccessFields section="success"}}
-    {{subTemplate "article-param-block" params=article.error _col1="Name" _hasType=_hasTypeInErrorFields section="error"}}
+    {{#if_gt article.success.examples.length compare=0}}
+      <ul class="nav nav-tabs nav-tabs-examples">
+        {{#each article.success.examples}}
+          <li{{#if_eq @index compare=0}} class="active"{{/if_eq}}>
+            <a href="#{{../section}}-examples-{{../id}}-{{@index}}">{{title}}</a>
+          </li>
+        {{/each}}
+      </ul>
+
+      <div class="tab-content">
+      {{#each article.success.examples}}
+        <div class="tab-pane{{#if_eq @index compare=0}} active{{/if_eq}}" id="{{../section}}-examples-{{../id}}-{{@index}}">
+        <pre class="prettyprint language-{{type}}" data-type="{{type}}"><code>{{{reformat content type}}}</code></pre>
+        </div>
+      {{/each}}
+      </div>
+    {{/if_gt}}
 
     {{subTemplate "article-sample-request" article=article id=id}}
 
@@ -173,7 +197,7 @@
 <script id="template-article-param-block" type="text/x-handlebars-template">
   {{#if params}}
     {{#each params.fields}}
-      <h2>{{__ @key}}</h2>
+      <h3>{{__ @key}}</h3>
       <table>
         <thead>
           <tr>
@@ -208,30 +232,12 @@
       </table>
     {{/each}}
 
-    {{#if_gt params.examples.length compare=0}}
-      <ul class="nav nav-tabs nav-tabs-examples">
-        {{#each params.examples}}
-          <li{{#if_eq @index compare=0}} class="active"{{/if_eq}}>
-            <a href="#{{../section}}-examples-{{../id}}-{{@index}}">{{title}}</a>
-          </li>
-        {{/each}}
-      </ul>
-
-      <div class="tab-content">
-      {{#each params.examples}}
-        <div class="tab-pane{{#if_eq @index compare=0}} active{{/if_eq}}" id="{{../section}}-examples-{{../id}}-{{@index}}">
-        <pre class="prettyprint language-{{type}}" data-type="{{type}}"><code>{{{reformat content type}}}</code></pre>
-        </div>
-      {{/each}}
-      </div>
-    {{/if_gt}}
-
   {{/if}}
 </script>
 
 <script id="template-article-sample-request" type="text/x-handlebars-template">
     {{#if article.sampleRequest}}
-      <h2>{{__ "Send a Sample Request"}}</h2>
+      <h2>{{__ "TRY IT"}}</h2>
       <form class="form-horizontal">
         <fieldset>
           <div class="control-group">

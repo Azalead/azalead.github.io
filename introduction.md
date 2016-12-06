@@ -1,9 +1,23 @@
-# Overview
+Azalead provides a REST API. This API is the best way to integrate with your marketing automation, your CRM or your content management system.
+Azalead API exposes endpoints to follow your account’s activities, manage your account lists and administrate your Azalead organization.
+<br/><br/>
+Before diving into the endpoints below, developers can read our <a href="https://azaanalytics.portal.azure-api.net/support" target="_parent">"Getting Started"</a> section for an overview of high-level concepts as well as some use cases.
+
+## Overview
 <br/>Use of this API requires an <a href="http://go.azalead.com/l/85062/2015-09-23/bqfw7" target="_blank">Azalead user account.</a>
+
+<span id="api-_-BaseURL"/>
+
+### Base URL
+All URLs referenced in the documentation have the following base:
+
+````
+https://api.azalead.com/latest
+````
 
 <span id="api-_-Schema"/>
 
-## Schema
+### Schema
 
 -   All API access is over `https`.
 
@@ -15,7 +29,8 @@
 
 <span id="api-_-Request"/>
 
-## Request
+### Request
+> All requests to Azalead's REST API require you to authenticate.
 
 #### HTTP Verbs
 
@@ -36,7 +51,7 @@ Where possible, Azalead api strives to use the appropriate HTTP verb to each act
 | `X-Auth-token` | Contains the user's authentication  token returned by the <a href="#api-Authentication">authentication endpoint</a> prefixed by `Bearer `.|
 
 
-#### Cross Origin Resource Sharing
+### Cross Origin Resource Sharing
 
 The API does not support natively Cross Origin Resource Sharing (CORS) for AJAX requests from any origin. If you need to perform such requests please contact your Customer Success Manager.
 
@@ -131,8 +146,8 @@ HTTP/1.1 500 Internal Server Error
 
 <span id="api-_-Help"/>
 
-## Getting help
+### Getting help
 
 Having trouble with Azalead api ? We can help!
--   Ask a question - we are on <a href='https://gitter.im/azalead/azalead-api'>gitter</a> .
+-   Ask a question - we are on <a href='https://gitter.im/azalead/azalead-api'>gitter</a>.
 -   Found a bug ?  <a href='https://github.com/Azalead/azalead.github.io/issues'>let us know</a>.
