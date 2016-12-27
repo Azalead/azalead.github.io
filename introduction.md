@@ -1,7 +1,7 @@
 Azalead provides a REST API. This API is the best way to integrate with your marketing automation, your CRM or your content management system.
 Azalead API exposes endpoints to follow your account’s activities, manage your account lists and administrate your Azalead organization.
 <br/><br/>
-Before diving into the endpoints below, developers can read our <a href="https://azaanalytics.portal.azure-api.net/support" target="_parent">"Getting Started"</a> section for an overview of high-level concepts as well as some use cases.
+Before diving into the endpoints below, developers can read our <a href="https://developers.azalead.com/rest-api-getting-started" target="_parent">"Getting Started"</a> section for an overview of high-level concepts as well as some use cases.
 
 ## Overview
 <br/>Use of this API requires an <a href="http://go.azalead.com/l/85062/2015-09-23/bqfw7" target="_blank">Azalead user account.</a>
@@ -149,5 +149,5 @@ HTTP/1.1 500 Internal Server Error
 ### Getting help
 
 Having trouble with Azalead api ? We can help!
--   Ask a question - we are on <a href='https://gitter.im/azalead/azalead-api'>gitter</a>.
--   Found a bug ?  <a href='https://github.com/Azalead/azalead.github.io/issues'>let us know</a>.
+-   Ask a question - we are on <a href="https://gitter.im/azalead/azalead-api" target="_blank">gitter</a>.
+-   Found a bug ?  <a href="https://github.com/Azalead/azalead.github.io/issues" target="_blank">let us know</a>.
