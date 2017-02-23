@@ -80,13 +80,11 @@ The API does not support natively Cross Origin Resource Sharing (CORS) for AJAX 
 
 ```` JSON
 HTTP/1.1 401 Unauthorized
- {
-  "timestamp": 1470831446391,
+{
+  "title": "Unauthorized",
   "status": 401,
-  "error": "Unauthorized",
-  "message": "Full authentication is required to access this resource",
-  "path": "/latest/resource/1234"
- }
+  "detail": "Full authentication is required to access this resource"
+}
 ````
 
 -   `403 Forbidden`
@@ -117,7 +115,8 @@ HTTP/1.1 400 Bad Request
 HTTP/1.1 405 Method Not Allowed
 {
   "title": "Method Not Allowed",
-  "status": 405
+  "status": 405,
+  "detail": "Request method 'GET' not supported"
 }
 ````
 
