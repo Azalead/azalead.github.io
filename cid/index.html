@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link  href="img/favicon.ico"  rel="icon" type="image/x-icon">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style media="screen" type="text/css">
+    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+    .string { color: green; }
+    .number { color: darkorange; }
+    .boolean { color: blue; }
+    .null { color: magenta; }
+    .key { color: red; }
+
+    html {
+      position: relative;
+      min-height: 100%;
+    }
+    body {
+      /* Margin bottom by footer height */
+      margin-bottom: 60px;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      /* Set the fixed height of the footer here */
+      height: 60px;
+      background-color: #f5f5f5;
+    }
+
+    </style>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <title>Azalead CID</title>
+</head>
+<body>
+<div class="container">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">Real time identification API <span class="glyphicon glyphicon-eye-open"></span> </a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://azalead.com"> <span class="glyphicon glyphicon-globe"></span> azalead.com</a></li> </li>
+    </ul>
+</div>
+<div class='container'>
+    <div class="container ">
+        <h1></h1>
+        <center><h4>Try the most powerful real time identification api</h4></center>
+        <h1></h1>
+    </div>
+    <div id='warn_msg' class="alert alert-warning" style='display:none;'  role="alert">
+        <span class="glyphicon glyphicon-eye-close"></span> Not found.
+    </div>
+
+    <div id='success_msg' class="alert alert-success" style='display:none;' role="alert">
+        <span class="glyphicon glyphicon-eye-open"></span> Success
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input id='in_ip' type="text" class="form-control" placeholder="69.171.231.161">
+                <span class="input-group-btn">
+                <button id='go_ip' class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input id='in_domain' type="text" class="form-control" placeholder="example.com">
+                <span class="input-group-btn">
+                <button id='go_domain' class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div>
+    <pre id='result' style='display:none;'>
+
+    </pre>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+
+    var getByIp = function(ipAddress, success, error) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://apiit.azalead.com/cid?ip_address="+ipAddress);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+          if(xhr.status == 200) {
+            typeof success === 'function' && success(xhr.responseText);
+          } else {
+            typeof error === 'function' && error(xhr.responseText,xhr.status);
+          }
+        }
+      }
+      xhr.send();
+    }
+
+    var getByDomain = function(domain, success, error) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "https://apiit.azalead.com/cid?domain="+domain);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+          if(xhr.status == 200) {
+            typeof success === 'function' && success(xhr.responseText);
+          } else {
+            typeof error === 'function' && error(xhr.responseText,xhr.status);
+          }
+        }
+      }
+      xhr.send();
+    }
+
+    function syntaxHighlight(json) {
+        if (typeof json != 'string') {
+             json = JSON.stringify(json, undefined, 2);
+        }
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
+    }
+    var showSuccessResult = function (json){
+      $('#result').html(syntaxHighlight(JSON.stringify(JSON.parse(json),undefined,2)));
+      $('#result').show();
+      $('#success_msg').show();
+      $('#warn_msg').hide();
+    }
+
+    var showWarn = function (response,status){
+      $('#result').hide();
+      $('#success_msg').hide();
+      if(status==429){
+            $('#warn_msg').html(JSON.parse(json).message)
+      }
+      $('#warn_msg').show();
+    }
+
+    $('#go_ip').click(function() {
+        var ip =$('#in_ip').val();
+        getByIp(ip,showSuccessResult,showWarn)
+    });
+
+    $('#go_domain').click(function() {
+        var domain =$('#in_domain').val();
+        getByDomain(domain,showSuccessResult,showWarn)
+    });
+    </script>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <p>Powered by <a href="https://azalead.com" class="links">Azalead</a> identification technology.</p>
+            </div>
+            <div class="col-sm-7">
+                <ul class="list-inline">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
