@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link  href="img/favicon.ico"  rel="icon" type="image/x-icon">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+    <style media="screen" type="text/css">
+    html {
+      position: relative;
+      min-height: 100%;
+    }
+    body {
+      /* Margin bottom by footer height */
+      margin-bottom: 60px;
+    }
+    .footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      /* Set the fixed height of the footer here */
+      height: 60px;
+      background-color: #f5f5f5;
+    }
+    </style>
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <title>Azalead CID</title>
+</head>
+<body>
+<div class="container">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="/">Ip sourcing api <span class="glyphicon glyphicon-eye-open"></span> </a>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="https://azalead.com"> <span class="glyphicon glyphicon-globe"></span> azalead.com</a></li> </li>
+    </ul>
+</div>
+<div class='container'>
+    <div class="container ">
+        <h1></h1>
+        <center><h4>Try the most powerful ip sourcing api</h4></center>
+        <h1></h1>
+    </div>
+
+   <div id='warn_msg' class="alert alert-warning" style='display:none;'  role="alert">
+        <span class="glyphicon glyphicon-eye-close"></span> Not found.
+    </div>
+
+    <div id='success_msg' class="alert alert-success" style='display:none;' role="alert">
+        <span class="glyphicon glyphicon-eye-open"></span> Success
+  </div>
+
+    <div class="row">
+        <div class="col-lg">
+            <div class="input-group">
+                <input id='in_query' type="text" class="form-control" placeholder="Microsoft">
+                <span class="input-group-btn">
+                <button id='go_find' class="btn btn-default" type="button">FIND</button>
+              </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div>
+    <br/>
+    <div id="result" class="container" style='display:none;' >
+        <table id="table" data-height="">
+        <thead>
+            <tr>
+                <th data-field="ipAddress">IP ADDRESS</th>
+                <th data-field="idOrgName">ID ORG</th>
+                <th data-field="matchedOrg">MATCHED ORG</th>
+            </tr>
+        </thead>
+    </table>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+<script>
+    var find = function(q, success, error) {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://localhost:9001/org_search?q="+q);
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+          if(xhr.status == 200) {
+            typeof success === 'function' && success(xhr.responseText);
+           $('#table').bootstrapTable('destroy'); 
+            $('#table').bootstrapTable({
+              data: JSON.parse(xhr.responseText)
+            });
+           } else {
+            typeof error === 'function' && error(xhr.responseText,xhr.status);
+          }
+        }
+      }
+      xhr.send();
+    }
+
+    var showSuccessResult = function (json){
+      $('#result').show();
+      $('#success_msg').show();
+      $('#warn_msg').hide();
+    }
+    var showWarn = function (response,status){
+      $('#result').hide();
+      $('#success_msg').hide();
+      if(status==429){
+            $('#warn_msg').html(JSON.parse(json).message)
+      }
+      $('#warn_msg').show();
+    }
+
+
+    $('#go_find').click(function() {
+        var query =$('#in_query').val();
+        find(query,showSuccessResult,showWarn)
+    });
+    </script>
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-5">
+                <p>Powered by <a href="https://azalead.com" class="links">Azalead</a> identification technology.</p>
+            </div>
+            <div class="col-sm-7">
+                <ul class="list-inline">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
