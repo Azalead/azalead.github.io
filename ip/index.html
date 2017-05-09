@@ -84,7 +84,7 @@
 <script>
     var find = function(q, success, error) {
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "https://apiit.azalead.com/ip/org_search?q="+q);
+      xhr.open("GET", "https://api.azalead.com/ip/org_search?q="+q);
       xhr.onreadystatechange = function() {
         if (xhr.readyState == XMLHttpRequest.DONE) {
           if(xhr.status == 200) {
