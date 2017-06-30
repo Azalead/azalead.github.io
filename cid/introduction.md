@@ -1,5 +1,5 @@
 Azalead provides a REST API for company identification (CID).
-Azalead API exposes endpoints allow you to retrieve the company corresponding either to an IP address or a domain.
+Azalead API exposes endpoints allow you to retrieve the company corresponding to an IP address.
 <br/><br/>
 Before diving into the endpoints below, developers can read our <a href="https://developers.azalead.com/rest-api-getting-started" target="_parent">"Getting Started"</a> section for an overview of high-level concepts as well as some use cases.
 
