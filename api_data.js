@@ -11,7 +11,7 @@ define({ "api": [
         "name": "user"
       }
     ],
-    "description": "<p>Returns a list of accounts order by last activity date by default. An account contains detailed company data, activity overview, list qualification and a score.</p> <p>This endpoint helps retrieve:</p> <ul> <li>Last active accounts in general</li> <li>Last active accounts in target account list</li> <li>A list of accounts that clicked on your ad or visited your website</li> <li>The list of accounts in your blacklist</li> <li>The list of accounts with alerts...</li> </ul>",
+    "description": "<p>Returns a paginated list of accounts order by last activity date by default. An account contains detailed company data, activity overview, list qualification and a score.</p> <p>This endpoint helps retrieve:</p> <ul> <li>Last active accounts in general</li> <li>Last active accounts in target account list</li> <li>A list of accounts that clicked on your ad or visited your website</li> <li>The list of accounts in your blacklist</li> <li>The list of accounts with alerts...</li> </ul> <p><em>Note on filtering accounts behavior:</em></p> <p>The list of account can be filtered on the following boolean attributes: <code>target</code>, <code>isp</code>, <code>blacklist</code> and <code>alert</code>. They are used to include or exclude accounts based on those attributes. When one of these attributes is set to false the list will contain <strong>only</strong> accounts with this attribute set to false. While when set to true, the list of account will contain all accounts with <strong>at least one</strong> of the attributes set to true.</p> <p>For instance <code>/account?target=false&amp;alert=false&amp;blacklist=true&amp;isp=true</code> will return all accounts including only blacklisted (<code>blacklist=true</code>) and reported as ISP (<code>isp=true</code>) but excluding target accounts (<code>target=false</code>) and account with subscribed alert (<code>alert=false</code>).</p> <p>By default <code>isp</code> and <code>blacklist</code> are excluded.</p>",
     "sampleRequest": [
       {
         "url": "https://api.azalead.com/account?page=:page&size=:size&sort=:sort&dir=:dir&filter=:filter&target=:target&alert=:alert&blacklist=:blacklist&isp=:isp&labels=:labels"
@@ -26,7 +26,7 @@ define({ "api": [
             "optional": true,
             "field": "page",
             "defaultValue": "1",
-            "description": ""
+            "description": "<p>The number of the page returned by the api call</p>"
           },
           {
             "group": "Parameter",
@@ -35,7 +35,7 @@ define({ "api": [
             "optional": true,
             "field": "size",
             "defaultValue": "25",
-            "description": ""
+            "description": "<p>The number of objects per page returned by the api call.</p>"
           },
           {
             "group": "Parameter",
@@ -54,7 +54,7 @@ define({ "api": [
             "optional": true,
             "field": "sort",
             "defaultValue": "lastActivityDate",
-            "description": ""
+            "description": "<p>The account's attribute on which the list of account is sorted.</p> <ul> <li>Using <code>website_visit</code> will sort the accounts with website visit as last activity on top, then with ad click and lastly with email viewed.</li> <li>Using <code>ad_clicked</code> will sort the accounts with ad click as last activity on top, then with website visit and lastly with email viewed.</li> <li>Using <code>email_viewed</code> will sort the accounts with email viewed as last activity on top, then with website visit and lastly with ad click.</li> </ul>"
           },
           {
             "group": "Parameter",
@@ -66,31 +66,14 @@ define({ "api": [
             "optional": true,
             "field": "dir",
             "defaultValue": "asc",
-            "description": ""
-          },
-          {
-            "group": "Parameter",
-            "type": "string",
-            "optional": true,
-            "field": "filter",
-            "defaultValue": "default",
-            "description": "<p>filter</p>"
+            "description": "<p>The direction on which the account list is sorted, by ascending (<code>asc</code>) or descending (<code>desc</code>) order.</p>"
           },
           {
             "group": "Parameter",
             "type": "boolean",
             "optional": true,
             "field": "target",
-            "defaultValue": "false",
-            "description": ""
-          },
-          {
-            "group": "Parameter",
-            "type": "boolean",
-            "optional": true,
-            "field": "blacklist",
-            "defaultValue": "false",
-            "description": ""
+            "description": "<p>Include (when true) or exclude (when false) accounts depending on the value of its <code>target</code> attribute.</p>"
           },
           {
             "group": "Parameter",
@@ -98,15 +81,22 @@ define({ "api": [
             "optional": true,
             "field": "isp",
             "defaultValue": "false",
-            "description": ""
+            "description": "<p>Include (when true) or exclude (when false) accounts depending on the value of its <code>isp</code> attribute.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "blacklist",
+            "defaultValue": "false",
+            "description": "<p>Include (when true) or exclude (when false) accounts depending on the value of its <code>blacklist</code> attribute for the authenticated user.</p>"
           },
           {
             "group": "Parameter",
             "type": "boolean",
             "optional": true,
             "field": "alert",
-            "defaultValue": "false",
-            "description": ""
+            "description": "<p>Include (when true) or exclude (when false) accounts depending on the value of its <code>alert</code> attribute for the authenticated user.</p>"
           },
           {
             "group": "Parameter",
@@ -114,14 +104,50 @@ define({ "api": [
             "optional": true,
             "field": "labels",
             "defaultValue": "{}",
-            "description": ""
+            "description": "<p>A list of <a href=\"#api-Label\">label identifiers</a> to filter the list of accounts with. The returning list of account will include accounts with these labels. Using the special identifier <code>0</code> will result in including accounts without labels.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"default\""
+            ],
+            "optional": true,
+            "field": "filter",
+            "description": "<p>If set to 'default' <a href=\"#api-Organization-user_2\">the ideal customer profile of the authenticated user</a> is applied in addition with other filters.</p>"
           }
         ]
       }
     },
+    "examples": [
+      {
+        "title": "Get the last active accounts from your target account list.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account?target=true",
+        "type": "curl"
+      },
+      {
+        "title": "Get the last active accounts.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account",
+        "type": "curl"
+      }
+    ],
     "success": {
+      "examples": [
+        {
+          "title": "Response:",
+          "content": "HTTP/1.1 200 OK\n[\n {\n  \"firstActivityDate\": 1470159902134,\n  \"lastActivityDate\": 1470389521000,\n  \"lastActivityType\": \"ad_clicked\",\n  \"activityCount\": 3,\n  \"score\": 1,\n  \"naceCode\": \"3212\",\n  \"idNational\": \"CHE-106.325.524\",\n  \"name\": \"COMPAGNIE FINANCIERE RICHEMONT SA\",\n  \"employeeCount\": 28324,\n  \"sizeCategory\": \"Very large company\",\n  \"foundingDate\": 567993600000,\n  \"industry\": \"Industry\",\n  \"legalForm\": \"Limited company - AG/SA\",\n  \"summary\": null,\n  \"address\": \"CHEMIN DE LA CHENAIE 50\",\n  \"city\": \"BELLEVUE\",\n  \"zipCode\": \"1293\",\n  \"country\": \"CH\",\n  \"phone\": \"+41 22 715 3500\",\n  \"emailDomain\": \"richemont.com\",\n  \"website\": \"www.richemont.com\",\n  \"labels\": [],\n  \"target\": false,\n  \"isp\": false,\n  \"alert\": false,\n  \"blacklist\": false,\n  \"screenshot\": 128568,\n  \"id\": 1000607\n },\n {\n  \"firstActivityDate\": 1460904212296,\n  \"lastActivityDate\": 1470389281000,\n  \"lastActivityType\": \"email_viewed\",\n  \"activityCount\": 89,\n  \"score\": 3,\n  \"naceCode\": \"2599\",\n  \"idNational\": \"556606-5446\",\n  \"name\": \"LINDAB INTERNATIONAL AB\",\n  \"employeeCount\": 4587,\n  \"sizeCategory\": \"Very large company\",\n  \"foundingDate\": -347155200000,\n  \"industry\": \"Industry\",\n  \"legalForm\": \"Public limited liability company - AB publikt\",\n  \"summary\": null,\n  \"address\": \"JARNVAGSGATAN 41\",\n  \"city\": \"BASTAD\",\n  \"zipCode\": \"269 82\",\n  \"country\": \"SE\",\n  \"phone\": \"+46 431 850 00\",\n  \"emailDomain\": \"lindab.com\",\n  \"website\": \"www.lindab.com\",\n  \"labels\": [],\n  \"target\": false,\n  \"isp\": false,\n  \"alert\": false,\n  \"blacklist\": false,\n  \"screenshot\": 128551,\n  \"id\": 1000606\n  },\n  {\n   \"firstActivityDate\": 1470389101604,\n   \"lastActivityDate\": 1470389101000,\n   \"lastActivityType\": \"email_viewed\",\n   \"activityCount\": 1,\n   \"score\": 0,\n   \"naceCode\": \"7120\",\n   \"idNational\": \"A64622970\",\n   \"name\": \"APPLUS SERVICES, S.A.\",\n   \"employeeCount\": 18420,\n   \"sizeCategory\": \"Very large company\",\n   \"foundingDate\": 820454400000,\n   \"industry\": \"Specific Act.\",\n   \"legalForm\": \"Public limited company - SA\",\n   \"summary\": \"La Compañia es líder mundial en Ensayo, Inspección y Certificación.\",\n   \"address\": \"APPLUS, CAMPUS UAB, CARRETERA ACCESO A LA FACULTAD DE\",\n   \"city\": \"BARCELONA, CATALONIA\",\n   \"zipCode\": \"08193\",\n   \"country\": \"ES\",\n   \"phone\": \"+34 900 103 067\",\n   \"emailDomain\": \"applus.com\",\n   \"website\": \"www.applus.com\",\n   \"labels\": [],\n   \"target\": false,\n   \"isp\": false,\n   \"alert\": false,\n   \"blacklist\": false,\n   \"screenshot\": 128530,\n   \"id\": 1000605\n  }\n ]",
+          "type": "json"
+        }
+      ],
       "fields": {
         "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique identifier for this account.</p>"
+          },
           {
             "group": "Success 200",
             "type": "timestamps",
@@ -139,9 +165,14 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "string",
+            "allowedValues": [
+              "\"website_visit\"",
+              "\"ad_clicked\"",
+              "\"email_viewed\""
+            ],
             "optional": false,
             "field": "lastActivityType",
-            "description": "<p>Last activity date for this account. Activity types are: website_visit, ad_clicked, email_viewed</p>"
+            "description": "<p>Last activity type for this account.</p>"
           },
           {
             "group": "Success 200",
@@ -153,6 +184,13 @@ define({ "api": [
           {
             "group": "Success 200",
             "type": "number",
+            "allowedValues": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
             "optional": false,
             "field": "score",
             "description": "<p>Score represents the account marketing engagement. Can take this values: 0 (cool), 1 (warm), 2 (hot), 3 (boiling hot), 4 (on fire)</p>"
@@ -190,7 +228,7 @@ define({ "api": [
             "type": "timestamps",
             "optional": false,
             "field": "foundingDate",
-            "description": "<p>Founding date for this acount's company.</p>"
+            "description": "<p>Founding date for this account's company.</p>"
           },
           {
             "group": "Success 200",
@@ -253,7 +291,7 @@ define({ "api": [
             "type": "string",
             "optional": false,
             "field": "emailDomain",
-            "description": "<p>Acccount email domain.</p>"
+            "description": "<p>Account email domain.</p>"
           },
           {
             "group": "Success 200",
@@ -267,7 +305,7 @@ define({ "api": [
             "type": "array",
             "optional": false,
             "field": "labels",
-            "description": "<p>Account labels.</p>"
+            "description": "<p>Account label identifiers.</p>"
           },
           {
             "group": "Success 200",
@@ -303,36 +341,10 @@ define({ "api": [
             "optional": false,
             "field": "screenshot",
             "description": "<p>This account screenshot is available at this url https://mobile.azalead.com/Azalead-Web/images/:screenshot.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "string",
-            "optional": false,
-            "field": "id",
-            "description": "<p>Unique identifier for this account.</p>"
           }
         ]
-      },
-      "examples": [
-        {
-          "title": "Response:",
-          "content": "HTTP/1.1 200 OK\n[\n {\n  \"firstActivityDate\": 1470159902134,\n  \"lastActivityDate\": 1470389521000,\n  \"lastActivityType\": \"ad_clicked\",\n  \"activityCount\": 3,\n  \"score\": 1,\n  \"naceCode\": \"3212\",\n  \"idNational\": \"CHE-106.325.524\",\n  \"name\": \"COMPAGNIE FINANCIERE RICHEMONT SA\",\n  \"employeeCount\": 28324,\n  \"sizeCategory\": \"Very large company\",\n  \"foundingDate\": 567993600000,\n  \"industry\": \"Industry\",\n  \"legalForm\": \"Limited company - AG/SA\",\n  \"summary\": null,\n  \"address\": \"CHEMIN DE LA CHENAIE 50\",\n  \"city\": \"BELLEVUE\",\n  \"zipCode\": \"1293\",\n  \"country\": \"CH\",\n  \"phone\": \"+41 22 715 3500\",\n  \"emailDomain\": \"richemont.com\",\n  \"website\": \"www.richemont.com\",\n  \"labels\": [],\n  \"target\": false,\n  \"isp\": false,\n  \"alert\": false,\n  \"blacklist\": false,\n  \"screenshot\": 128568,\n  \"id\": 1000607\n },\n {\n  \"firstActivityDate\": 1460904212296,\n  \"lastActivityDate\": 1470389281000,\n  \"lastActivityType\": \"email_viewed\",\n  \"activityCount\": 89,\n  \"score\": 3,\n  \"naceCode\": \"2599\",\n  \"idNational\": \"556606-5446\",\n  \"name\": \"LINDAB INTERNATIONAL AB\",\n  \"employeeCount\": 4587,\n  \"sizeCategory\": \"Very large company\",\n  \"foundingDate\": -347155200000,\n  \"industry\": \"Industry\",\n  \"legalForm\": \"Public limited liability company - AB publikt\",\n  \"summary\": null,\n  \"address\": \"JARNVAGSGATAN 41\",\n  \"city\": \"BASTAD\",\n  \"zipCode\": \"269 82\",\n  \"country\": \"SE\",\n  \"phone\": \"+46 431 850 00\",\n  \"emailDomain\": \"lindab.com\",\n  \"website\": \"www.lindab.com\",\n  \"labels\": [],\n  \"target\": false,\n  \"isp\": false,\n  \"alert\": false,\n  \"blacklist\": false,\n  \"screenshot\": 128551,\n  \"id\": 1000606\n  },\n  {\n   \"firstActivityDate\": 1470389101604,\n   \"lastActivityDate\": 1470389101000,\n   \"lastActivityType\": \"email_viewed\",\n   \"activityCount\": 1,\n   \"score\": 0,\n   \"naceCode\": \"7120\",\n   \"idNational\": \"A64622970\",\n   \"name\": \"APPLUS SERVICES, S.A.\",\n   \"employeeCount\": 18420,\n   \"sizeCategory\": \"Very large company\",\n   \"foundingDate\": 820454400000,\n   \"industry\": \"Specific Act.\",\n   \"legalForm\": \"Public limited company - SA\",\n   \"summary\": \"La Compañia es líder mundial en Ensayo, Inspección y Certificación.\",\n   \"address\": \"APPLUS, CAMPUS UAB, CARRETERA ACCESO A LA FACULTAD DE\",\n   \"city\": \"BARCELONA, CATALONIA\",\n   \"zipCode\": \"08193\",\n   \"country\": \"ES\",\n   \"phone\": \"+34 900 103 067\",\n   \"emailDomain\": \"applus.com\",\n   \"website\": \"www.applus.com\",\n   \"labels\": [],\n   \"target\": false,\n   \"isp\": false,\n   \"alert\": false,\n   \"blacklist\": false,\n   \"screenshot\": 128530,\n   \"id\": 1000605\n  }\n ]",
-          "type": "json"
-        }
-      ]
-    },
-    "examples": [
-      {
-        "title": "Get the last active accounts from your target account list.",
-        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account?target=true",
-        "type": "curl"
-      },
-      {
-        "title": "Get the last active accounts.",
-        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account",
-        "type": "curl"
       }
-    ],
+    },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/Account.md",
     "groupTitle": "Account",
     "header": {
@@ -419,7 +431,7 @@ define({ "api": [
         "name": "user"
       }
     ],
-    "description": "<p>Returns a single account. An account contains detailed company data, activity overview, list membership status and a score.</p>",
+    "description": "<p>Returns a single account, specified by its unique id. An account contains detailed company data, activity overview, list membership status and a score.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -428,7 +440,7 @@ define({ "api": [
             "type": "number",
             "optional": false,
             "field": "id",
-            "description": "<p>the account id</p>"
+            "description": "<p>The identifier of the account to be returned.</p>"
           }
         ]
       }
@@ -447,7 +459,212 @@ define({ "api": [
           "content": "HTTP/1.1 200 OK\n {\n     \"firstActivityDate\": 1461577742029,\n     \"lastActivityDate\": 1470344499000,\n     \"lastActivityType\": \"email_viewed\",\n     \"activityCount\": 122,\n     \"score\": 3,\n     \"naceCode\": \"2811\",\n     \"idNational\": \"14-0689340\",\n     \"name\": \"GENERAL ELECTRIC COMPANY\",\n     \"employeeCount\": 0,\n     \"sizeCategory\": \"Very large company\",\n     \"foundingDate\": -2452377600000,\n     \"industry\": \"Industry\",\n     \"legalForm\": \"Public limited company\",\n     \"summary\": null,\n     \"revenue\": 105898777243,\n     \"address\": \"3135, EASTON TURNPIKE\",\n     \"city\": \"FAIRFIELD\",\n     \"zipCode\": \"06828\",\n     \"country\": \"US\",\n     \"phone\": \"+1 203 373 2211\",\n     \"emailDomain\": \"ge.com\",\n     \"website\": \"www.ge.com\",\n     \"emailPattern\": \"{first}.{last}\",\n     \"labels\": [\n         1\n     ],\n     \"target\": true,\n     \"isp\": false,\n     \"alert\": false,\n     \"blacklist\": false,\n     \"screenshot\": 17327,\n     \"id\": 1000039\n }",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique identifier for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "firstActivityDate",
+            "description": "<p>First activity date for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "lastActivityDate",
+            "description": "<p>Last activity date for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "\"website_visit\"",
+              "\"ad_clicked\"",
+              "\"email_viewed\""
+            ],
+            "optional": false,
+            "field": "lastActivityType",
+            "description": "<p>Last activity type for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "activityCount",
+            "description": "<p>Number of activities for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "allowedValues": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
+            "optional": false,
+            "field": "score",
+            "description": "<p>Score represents the account marketing engagement. Can take this values: 0 (cool), 1 (warm), 2 (hot), 3 (boiling hot), 4 (on fire)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "idNational",
+            "description": "<p>National ID for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "employeeCount",
+            "description": "<p>Number of employees.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "sizeCategory",
+            "description": "<p>Account size category (cf <a href=\"#api-Reference-ref_data_3\">REFERENCE &gt; Categories</a>).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "foundingDate",
+            "description": "<p>Founding date for this account's company.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "industry",
+            "description": "<p>Account industry.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "legalForm",
+            "description": "<p>Account legal form.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "summary",
+            "description": "<p>Account summary.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Account address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "city",
+            "description": "<p>Account city.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "zipCode",
+            "description": "<p>Account zip code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country",
+            "description": "<p>Account country.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Account phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "emailDomain",
+            "description": "<p>Account email domain.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "website",
+            "description": "<p>Account website.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "labels",
+            "description": "<p>Account label identifiers.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "target",
+            "description": "<p>Specifies if this account is a target account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "isp",
+            "description": "<p>Specifies if this account is an ISP (Internet Service Provider).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "alert",
+            "description": "<p>Specifies if there is an alert set for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "blacklist",
+            "description": "<p>Specifies if this account is in the blacklist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "screenshot",
+            "description": "<p>This account screenshot is available at this url https://mobile.azalead.com/Azalead-Web/images/:screenshot.</p>"
+          }
+        ]
+      }
     },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/Account.md",
     "groupTitle": "Account",
@@ -551,6 +768,207 @@ define({ "api": [
             "optional": false,
             "field": "updated",
             "description": "<p>account</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique identifier for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "firstActivityDate",
+            "description": "<p>First activity date for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "lastActivityDate",
+            "description": "<p>Last activity date for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "\"website_visit\"",
+              "\"ad_clicked\"",
+              "\"email_viewed\""
+            ],
+            "optional": false,
+            "field": "lastActivityType",
+            "description": "<p>Last activity type for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "activityCount",
+            "description": "<p>Number of activities for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "allowedValues": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
+            "optional": false,
+            "field": "score",
+            "description": "<p>Score represents the account marketing engagement. Can take this values: 0 (cool), 1 (warm), 2 (hot), 3 (boiling hot), 4 (on fire)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "idNational",
+            "description": "<p>National ID for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "employeeCount",
+            "description": "<p>Number of employees.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "sizeCategory",
+            "description": "<p>Account size category (cf <a href=\"#api-Reference-ref_data_3\">REFERENCE &gt; Categories</a>).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "foundingDate",
+            "description": "<p>Founding date for this account's company.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "industry",
+            "description": "<p>Account industry.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "legalForm",
+            "description": "<p>Account legal form.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "summary",
+            "description": "<p>Account summary.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Account address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "city",
+            "description": "<p>Account city.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "zipCode",
+            "description": "<p>Account zip code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country",
+            "description": "<p>Account country.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Account phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "emailDomain",
+            "description": "<p>Account email domain.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "website",
+            "description": "<p>Account website.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "labels",
+            "description": "<p>Account label identifiers.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "target",
+            "description": "<p>Specifies if this account is a target account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "isp",
+            "description": "<p>Specifies if this account is an ISP (Internet Service Provider).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "alert",
+            "description": "<p>Specifies if there is an alert set for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "blacklist",
+            "description": "<p>Specifies if this account is in the blacklist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "screenshot",
+            "description": "<p>This account screenshot is available at this url https://mobile.azalead.com/Azalead-Web/images/:screenshot.</p>"
           }
         ]
       },
@@ -567,7 +985,7 @@ define({ "api": [
         "name": "admin"
       }
     ],
-    "description": "<p>Updates the account, specified by the id parameter, target account list, blacklist or ISP (Internet Service Provider) list membership.</p>",
+    "description": "<p>Updates the account, specified by the id parameter, target account list, blacklist or ISP (Internet Service Provider) list membership.</p> <p>The <code>target</code> and <code>isp</code> parameters, as well as the <code>alert</code> and <code>blacklist</code> parameters, are exclusive. When one is <code>true</code>, the other is automatically set to <code>false</code>, and when one is <code>false</code>, the other is automatically set to <code>true</code>. If both are send with the same value a <code>400 BAD REQUEST</code> error will be returned with an explanatory message.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -576,28 +994,35 @@ define({ "api": [
             "type": "number",
             "optional": false,
             "field": "id",
-            "description": "<p>the account id</p>"
+            "description": "<p>The identifier of the account to update.</p>"
           },
           {
             "group": "Parameter",
             "type": "boolean",
             "optional": true,
             "field": "target",
-            "description": ""
-          },
-          {
-            "group": "Parameter",
-            "type": "boolean",
-            "optional": true,
-            "field": "blacklist",
-            "description": ""
+            "description": "<p>The new value of the target attribute for this account. Use <code>true</code> to set the account as target, <code>false</code> to remove the account from the target list. This parameter should not be used along with the isp parameter.</p>"
           },
           {
             "group": "Parameter",
             "type": "boolean",
             "optional": true,
             "field": "isp",
-            "description": ""
+            "description": "<p>The new value of the isp attribute for this account. Use <code>true</code> to add it to ISP list membership for all users, <code>false</code> to remove it. This parameter should not be used along with the target parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "alert",
+            "description": "<p>The new value of the alert attribute for this account and the authenticated user. Use <code>true</code> to subscribe to alert with current authenticated user, <code>false</code> to not subscribe. This parameter should not be used along with the blacklist parameter.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "blacklist",
+            "description": "<p>The new value of the blacklist attribute for this account and the authenticated user. Use <code>true</code> to add this account to the current authenticated user blacklist, <code>false</code> to remove it. This parameter should not be used along with the alert parameter.</p>"
           }
         ]
       }
