@@ -364,8 +364,8 @@
   },
   {
     "type": "get",
-    "url": "/core/account/:id/contact",
-    "title": "Account's contacts",
+    "url": "/core/account/:id_account/contact",
+    "title": "Contacts of an account",
     "version": "0.0.1",
     "name": "account_10",
     "group": "Account",
@@ -374,7 +374,7 @@
         "name": "user"
       }
     ],
-    "description": "<p>Lists an account contacts.</p>",
+    "description": "<p>Returns the contact list of the specified account id.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -382,26 +382,196 @@
             "group": "Parameter",
             "type": "number",
             "optional": false,
-            "field": "id",
-            "description": "<p>the account id</p>"
+            "field": "id_account",
+            "description": "<p>The identifier of the account for which contacts will be listed.</p>"
           }
         ]
       }
     },
+    "examples": [
+      {
+        "title": "Get all contacts of an account",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/contact",
+        "type": "curl"
+      }
+    ],
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  [\n   {\n       \"position\": \"Chairman Procter & Gamble; CHAIRMAN OF THE BOARD, PRESIDENT, CHIEF EXECUTIVE Officer\",\n       \"email\": null,\n       \"favorite\": null,\n       \"firstName\": \"Alan\",\n       \"lastName\": \"Lafley\",\n       \"phone\": null,\n       \"source\": \"azalead\",\n       \"id\": 164579\n   },\n   {\n       \"position\": \"President and Chief Executive Officer\",\n       \"email\": null,\n       \"favorite\": null,\n       \"firstName\": \"Paula\",\n       \"lastName\": \"LopezDeSilanes\",\n       \"phone\": null,\n       \"source\": \"azalead\",\n       \"id\": 164580\n   },\n   {\n       \"position\": \"Presiding Member of the Board of Directors; Presiding Independent Director\",\n       \"email\": null,\n       \"favorite\": null,\n       \"firstName\": \"W.\",\n       \"lastName\": \"McNerney\",\n       \"phone\": null,\n       \"source\": \"azalead\",\n       \"id\": 164581\n   },\n   ...\n  ]",
+          "content": "HTTP/1.1 200 OK\n  [\n   {\n       \"id\": 164579,\n       \"position\": \"Chairman Procter & Gamble; CHAIRMAN OF THE BOARD, PRESIDENT, CHIEF EXECUTIVE Officer\",\n       \"firstName\": \"Alan\",\n       \"lastName\": \"Lafley\",\n       \"email\": \"alan.lafley@pg.com\",\n       \"phone\": \"+33 1 00 11 22 33\"\n   },\n   {\n       \"id\": 164580,\n       \"position\": \"President and Chief Executive Officer\",\n       \"firstName\": \"Paula\",\n       \"lastName\": \"LopezDeSilanes\",\n       \"email\": \"paula.LopezDeSilanes@company.com\",\n       \"phone\": null\n   },\n   {\n       \"id\": 164581,\n       \"position\": \"Presiding Member of the Board of Directors; Presiding Independent Director\",\n       \"firstName\": \"W.\",\n       \"lastName\": \"McNerney\",\n       \"email\": null,\n       \"phone\": \"+33 1 99 88 77 66\"\n   }\n  ]",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique identifier for this contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Position of the contact in this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "firstName",
+            "description": "<p>Firstname of the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": "<p>Lastname of the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email address of the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number of the contact.</p>"
+          }
+        ]
+      }
     },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/contact/Contact.md",
     "groupTitle": "Account",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/core/account/:id/contact"
+        "url": "https://api.azalead.com/core/account/:id_account/contact"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/core/account/:id_account/contact/:id_contact/find-email",
+    "title": "Account's contact email",
+    "version": "0.0.1",
+    "name": "account_11",
+    "group": "Account",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Returns specific account contact information.<br> If the contact email address field if empty, performs an external search to try to find an associated email to this contact.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id_account",
+            "description": "<p>The identifier of the account for which contacts will be listed.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id_contact",
+            "description": "<p>The identifier of the contact which will be displayed and for which an email will be searched.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Get account contact email",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/contact/987654/find-email",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  [   \n   {\n       \"id\": 164579,\n       \"position\": \"Chairman Procter & Gamble; CHAIRMAN OF THE BOARD, PRESIDENT, CHIEF EXECUTIVE Officer\",\n       \"firstName\": \"Alan\",\n       \"lastName\": \"Lafley\",\n       \"email\": \"alan.lafley@pg.com\",\n       \"phone\": \"+33 1 00 11 22 33\"\n   }\n  ]",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique identifier for this contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "position",
+            "description": "<p>Position of the contact in this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "firstName",
+            "description": "<p>Firstname of the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": "<p>Lastname of the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email address of the contact.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>The phone number of the contact.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/contact/Contact.md",
+    "groupTitle": "Account",
+    "sampleRequest": [
+      {
+        "url": "https://api.azalead.com/core/account/:id_account/contact/:id_contact/find-email"
       }
     ],
     "header": {
@@ -2891,63 +3061,6 @@
             "optional": false,
             "field": "id",
             "description": "<p>the account id</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"state\": \"open\",\n    \"probabilityPercentage\": 50,\n    \"idUser\": 2375\n    \"id\": 2524\n   }\n  ]",
-          "type": "json"
-        }
-      ]
-    },
-    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
-    "groupTitle": "Opportunity",
-    "sampleRequest": [
-      {
-        "url": "https://api.azalead.com/core/account/:id/opportunity"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "X-Auth-token",
-            "defaultValue": "Bearer YOUR_TOKEN",
-            "description": ""
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "get",
-    "url": "/core/account/:id/opportunity",
-    "title": "Account's opportunities",
-    "version": "0.0.16",
-    "name": "account_opportunity_1",
-    "group": "Opportunity",
-    "permission": [
-      {
-        "name": "user"
-      }
-    ],
-    "description": "<p>Returns the opportunities linked to a specific account.</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>the account id</p>"
           },
           {
             "group": "Parameter",
@@ -3060,6 +3173,63 @@
           }
         ]
       }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
+    "groupTitle": "Opportunity",
+    "sampleRequest": [
+      {
+        "url": "https://api.azalead.com/core/account/:id/opportunity"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/core/account/:id/opportunity",
+    "title": "Account's opportunities",
+    "version": "0.0.16",
+    "name": "account_opportunity_1",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Returns the opportunities linked to a specific account.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the account id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"state\": \"open\",\n    \"probabilityPercentage\": 50,\n    \"idUser\": 2375\n    \"id\": 2524\n   }\n  ]",
+          "type": "json"
+        }
+      ]
     },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
     "groupTitle": "Opportunity",
