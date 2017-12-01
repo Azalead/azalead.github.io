@@ -115,6 +115,20 @@
             "optional": true,
             "field": "filter",
             "description": "<p>If set to 'default' <a href=\"#api-Organization-user_2\">the ideal customer profile of the authenticated user</a> is applied in addition with other filters.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "from",
+            "description": "<p>Long number, representing the lower boundary of the last registered visit time filter, expressed as UNIX time (in milliseconds since January 1, 1970, 00:00:00 GMT).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "to",
+            "description": "<p>Long number, representing the upper boundary of the last registered visit time filter, expressed as UNIX time (in milliseconds since January 1, 1970, 00:00:00 GMT).</p>"
           }
         ]
       }
@@ -299,6 +313,13 @@
             "optional": false,
             "field": "website",
             "description": "<p>Account website.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "emailPattern",
+            "description": "<p>Account email pattern.</p>"
           },
           {
             "group": "Success 200",
@@ -793,6 +814,13 @@
           },
           {
             "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "emailPattern",
+            "description": "<p>Account email pattern.</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "array",
             "optional": false,
             "field": "labels",
@@ -870,7 +898,7 @@
         "name": "user"
       }
     ],
-    "description": "<p>Returns an account activity overview. Activities are: website visits, ads clicked and emails viewed.</p>",
+    "description": "<p>Returns an account activity overview. Activities are: website visits, ads clicked and emails viewed. There's also an information about average website visit duration.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -879,19 +907,58 @@
             "type": "number",
             "optional": false,
             "field": "id",
-            "description": "<p>the account id</p>"
+            "description": "<p>The account id, which overview is requested. Provided as a part of the URL.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "from",
+            "description": "<p>Long number, representing the lower boundary of the activities time filter, expressed as UNIX time (in milliseconds since January 1, 1970, 00:00:00 GMT).</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "to",
+            "description": "<p>Long number, representing the upper boundary of the activities time filter, expressed as UNIX time (in milliseconds since January 1, 1970, 00:00:00 GMT).</p>"
           }
         ]
       }
     },
-    "examples": [
-      {
-        "title": "cURL :",
-        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/overview",
-        "type": "json"
-      }
-    ],
     "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "adClickedCount",
+            "description": "<p>The amount of ADs clicked for the specified account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "websiteVisitCount",
+            "description": "<p>The amount of website visits for the specified account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "emailViewedCount",
+            "description": "<p>The amount of viewed emails for the specified account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "averageWebsiteVisitDurationInSecond",
+            "description": "<p>Average website visit duration, represented in seconds.</p>"
+          }
+        ]
+      },
       "examples": [
         {
           "title": "Success-Response:",
@@ -900,11 +967,395 @@
         }
       ]
     },
+    "examples": [
+      {
+        "title": "Basic endpoint usage :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/overview",
+        "type": "curl"
+      },
+      {
+        "title": "Usage with date filtering :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/overview?from=1483225200000&to=1485903600000",
+        "type": "curl"
+      }
+    ],
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/Account.md",
     "groupTitle": "Account",
     "sampleRequest": [
       {
         "url": "https://api.azalead.com/core/account/:id/overview"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/core/account/:id/news",
+    "title": "Account news",
+    "version": "0.0.1",
+    "name": "account_3_1",
+    "group": "Account",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>This endpoint is representing an integration with &quot;Bing news&quot;. The system will make a request to &quot;Bing News&quot;, returning back top-5 news related to an account company name. So the result is normally represented by an array of 5 elements.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The account id, for which related news are requested. Provided as a part of the URL.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The article title.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "url",
+            "description": "<p>URL to the full article.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Short summary of the article or its introduction.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "date",
+            "optional": false,
+            "field": "datePublished",
+            "description": "<p>The date and time when the article was published.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n[\n  {\n    \"name\":\"Women in innovation: There is still room for progress\",\n    \"url\":\"http://www.bing.com/some_long_url\",\n    \"description\":\"Marie-Vorgan Le Barzic, CEO of Numa Paris; a start-up incubator born out of ‘Silicon Sentier,’ has established herself as a leading figure on the start-up scene. More and more women are starting to gain prominence thanks to their success: Rania ...\",\n    \"datePublished\":\"2017-11-19T08:36:00\"\n  },\n  {\n    \"name\":\"Cassidy: Medvedev’s Russian Silicon Valley could actually happen\",\n    \"url\":\"http://www.bing.com/other_long_url\",\n    \"description\":\"Silicon Sentier in France, Silicon Oasis in Dubai — with varying success. But none has achieved the notoriety of Silicon Valley. But Skolkovo might benefit from a growing Russia buzz in the valley. There’s the foundation’s Sand Hill Road office ...\",\n    \"datePublished\":\"2011-03-31T13:16:40\"\n  }\n]",
+          "type": "json"
+        }
+      ]
+    },
+    "examples": [
+      {
+        "title": "cURL :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/news",
+        "type": "json"
+      }
+    ],
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/Account.md",
+    "groupTitle": "Account",
+    "sampleRequest": [
+      {
+        "url": "https://api.azalead.com/core/account/:id/news"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/core/account/:id/emailPattern",
+    "title": "Account email pattern",
+    "version": "0.0.1",
+    "name": "account_3_2",
+    "group": "Account",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>This endpoint is giving back the requested account details, but in case if the email pattern is missing for this account, it also makes a try to figure it out through third-party services. In case of successful search of the email pattern, the corresponding field of the account will be updated and stored.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The account id. Provided as a part of the URL.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "cURL :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/emailPattern",
+        "type": "json"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  {\n    \"firstActivityDate\": 1460904166028,\n    \"lastActivityDate\": 1470346081000,\n    \"lastActivityType\": \"email_viewed\",\n    \"activityCount\": 139,\n    \"score\": 3,\n    \"naceCode\": \"2932\",\n    \"idNational\": \"A23RUXWKASG834LTMK28\",\n    \"name\": \"AUTOLIV, INC.\",\n    \"employeeCount\": 60000,\n    \"sizeCategory\": \"Very large company\",\n    \"foundingDate\": 844128000000,\n    \"industry\": \"Industry\",\n    \"legalForm\": \"Public limited company\",\n    \"summary\": null,\n    \"address\": null,\n    \"city\": null,\n    \"zipCode\": null,\n    \"country\": \"US\",\n    \"phone\": null,\n    \"emailDomain\": \"autoliv.com\",\n    \"website\": \"www.autoliv.com\",\n    \"emailPattern\": \"{first}.{last}\",\n    \"labels\": [],\n    \"target\": false,\n    \"isp\": false,\n    \"alert\": false,\n    \"blacklist\": false,\n    \"screenshot\": 128019,\n    \"id\": 1001042\n  }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique identifier for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "firstActivityDate",
+            "description": "<p>First activity date for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "lastActivityDate",
+            "description": "<p>Last activity date for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "\"website_visit\"",
+              "\"ad_clicked\"",
+              "\"email_viewed\""
+            ],
+            "optional": false,
+            "field": "lastActivityType",
+            "description": "<p>Last activity type for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "activityCount",
+            "description": "<p>Number of activities for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "allowedValues": [
+              "0",
+              "1",
+              "2",
+              "3",
+              "4"
+            ],
+            "optional": false,
+            "field": "score",
+            "description": "<p>Score represents the account marketing engagement. Can take this values: 0 (cool), 1 (warm), 2 (hot), 3 (boiling hot), 4 (on fire)</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "idNational",
+            "description": "<p>National ID for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Account name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "employeeCount",
+            "description": "<p>Number of employees.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "sizeCategory",
+            "description": "<p>Account size category (cf <a href=\"#api-Reference-ref_data_3\">REFERENCE &gt; Categories</a>).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "foundingDate",
+            "description": "<p>Founding date for this account's company.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "industry",
+            "description": "<p>Account industry.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "legalForm",
+            "description": "<p>Account legal form.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "summary",
+            "description": "<p>Account summary.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "address",
+            "description": "<p>Account address.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "city",
+            "description": "<p>Account city.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "zipCode",
+            "description": "<p>Account zip code.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "country",
+            "description": "<p>Account country.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "phone",
+            "description": "<p>Account phone number.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "emailDomain",
+            "description": "<p>Account email domain.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "website",
+            "description": "<p>Account website.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "emailPattern",
+            "description": "<p>Account email pattern.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "labels",
+            "description": "<p>Account label identifiers.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "target",
+            "description": "<p>Specifies if this account is a target account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "isp",
+            "description": "<p>Specifies if this account is an ISP (Internet Service Provider).</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "alert",
+            "description": "<p>Specifies if there is an alert set for this account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "blacklist",
+            "description": "<p>Specifies if this account is in the blacklist.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "screenshot",
+            "description": "<p>This account screenshot is available at this url https://mobile.azalead.com/Azalead-Web/images/:screenshot.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/Account.md",
+    "groupTitle": "Account",
+    "sampleRequest": [
+      {
+        "url": "https://api.azalead.com/core/account/:id/emailPattern"
       }
     ],
     "header": {
@@ -1100,6 +1551,13 @@
           },
           {
             "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "emailPattern",
+            "description": "<p>Account email pattern.</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "array",
             "optional": false,
             "field": "labels",
@@ -1239,7 +1697,7 @@
         "name": "user"
       }
     ],
-    "description": "<p>Returns the account alert’s recipient list.</p>",
+    "description": "<p>Given the id of an Account, returns the list of its alert recipients. The recipients represent only active users.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1253,14 +1711,53 @@
         ]
       }
     },
+    "examples": [
+      {
+        "title": "cURL :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/alert-recipient",
+        "type": "json"
+      }
+    ],
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  [\n      {\n          \"email\": \"sales4@acme.com.azasand\",\n          \"firstName\": \"John\",\n          \"lastName\": \"Branson\",\n          \"id\": 2375\n      },\n      {\n          \"email\": \"jdeley@acme.com.azasand\",\n          \"firstName\": \"Justin\",\n          \"lastName\": \"Deley\",\n          \"id\": 2261\n      }\n  ]",
+          "content": "HTTP/1.1 200 OK\n  [\n      {\n          \"email\": \"sales4@acme.com\",\n          \"firstName\": \"John\",\n          \"lastName\": \"Branson\",\n          \"id\": 2375\n      },\n      {\n          \"email\": \"jdeley@acme.com\",\n          \"firstName\": \"Justin\",\n          \"lastName\": \"Deley\",\n          \"id\": 2261\n      }\n  ]",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "firstName",
+            "description": "<p>The first name of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": "<p>The last name of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email of the user. Represents the user login.</p>"
+          }
+        ]
+      }
     },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/actionuser/AlertRecipient.md",
     "groupTitle": "Account",
@@ -1296,7 +1793,7 @@
         "name": "admin or alert management right"
       }
     ],
-    "description": "<p>Adds an alert’s recipient for an account.</p>",
+    "description": "<p>Subscribes the specified user to the alerts for the specified account. Returns the created user details.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1305,26 +1802,65 @@
             "type": "number",
             "optional": false,
             "field": "id_account",
-            "description": "<p>the account id</p>"
+            "description": "<p>The account id, provided as a part of the URL. The specified user will be subscribed to alerts of this account.</p>"
           },
           {
             "group": "Parameter",
             "type": "number",
             "optional": false,
             "field": "id",
-            "description": "<p>the user id that will receive the alerts</p>"
+            "description": "<p>The user id (provided in request body), which will be subscribed to the specified account.</p>"
           }
         ]
       }
     },
+    "examples": [
+      {
+        "title": "cURL :",
+        "content": "curl -d '{\"id:987654321\"}' -H \"Content-Type: application/json\" -H \"X-Auth-token:Bearer YOUR_TOKEN\" -X POST https://api.azalead.com/core/account/123456/alert-recipient",
+        "type": "json"
+      }
+    ],
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 201 Created\n  {\n      \"email\": \"jdeley@acme.com.azasand\",\n      \"firstName\": \"Justin\",\n      \"lastName\": \"Deley\",\n      \"id\": 2261\n  }",
+          "content": "HTTP/1.1 201 Created\n  {\n      \"email\": \"jdeley@acme.com\",\n      \"firstName\": \"Justin\",\n      \"lastName\": \"Deley\",\n      \"id\": 2261\n  }",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "firstName",
+            "description": "<p>The first name of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": "<p>The last name of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email of the user. Represents the user login.</p>"
+          }
+        ]
+      }
     },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/actionuser/AlertRecipient.md",
     "groupTitle": "Account",
@@ -1368,7 +1904,7 @@
         "name": "admin or alert management right"
       }
     ],
-    "description": "<p>Removes an alert’s recipient for an account.</p>",
+    "description": "<p>Removes the subscription of the specified user to the alerts of the specified account. Returns the deleted user details.</p>",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -1377,26 +1913,65 @@
             "type": "number",
             "optional": false,
             "field": "id_account",
-            "description": "<p>the account id</p>"
+            "description": "<p>The account id, provided as a part of the URL. The specified user will be subscribed to alerts of this account.</p>"
           },
           {
             "group": "Parameter",
             "type": "number",
             "optional": false,
             "field": "id",
-            "description": "<p>the user id</p>"
+            "description": "<p>The user id, provided as a part of the URL, which will be subscribed to the specified account.</p>"
           }
         ]
       }
     },
+    "examples": [
+      {
+        "title": "cURL :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\" -X DELETE https://api.azalead.com/core/account/123456/alert-recipient/987654321",
+        "type": "json"
+      }
+    ],
     "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n    {\n        \"email\": \"jdeley@acme.com.azasand\",\n        \"firstName\": \"Justin\",\n        \"lastName\": \"Deley\",\n        \"id\": 2261\n    }",
+          "content": "HTTP/1.1 200 OK\n    {\n        \"email\": \"jdeley@acme.com\",\n        \"firstName\": \"Justin\",\n        \"lastName\": \"Deley\",\n        \"id\": 2261\n    }",
           "type": "json"
         }
-      ]
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The id of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "firstName",
+            "description": "<p>The first name of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "lastName",
+            "description": "<p>The last name of the user.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "email",
+            "description": "<p>The email of the user. Represents the user login.</p>"
+          }
+        ]
+      }
     },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/actionuser/AlertRecipient.md",
     "groupTitle": "Account",
@@ -2120,21 +2695,21 @@
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>The identifier of the event (UUID)</p>"
+            "description": "<p>The identifier of the event (UUID).</p>"
           },
           {
             "group": "event object",
             "type": "String",
             "optional": false,
             "field": "type",
-            "description": "<p>The type of event</p>"
+            "description": "<p>The type of event.</p>"
           },
           {
             "group": "event object",
             "type": "Object[]",
             "optional": false,
             "field": "content",
-            "description": "<p>The content/data of the event. Will consiste of a key/value json object varying in fonction of the event type.</p>"
+            "description": "<p>The content/data of the event. Will consist of a key/value json object varying in function of the event type.</p>"
           }
         ],
         "opener object": [
@@ -2143,7 +2718,7 @@
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>Email adress of the person who opened the email</p>"
+            "description": "<p>Email address of the person who opened the email</p>"
           },
           {
             "group": "opener object",
@@ -2161,7 +2736,7 @@
           "type": "json"
         },
         {
-          "title": "Success-Response website_vist activity:",
+          "title": "Success-Response website_visit activity:",
           "content": "HTTP/1.1 200 OK\n    {\n        \"type\": \"website_visit\",\n        \"date\": 1507884678000,\n        \"visitedPages\": [\n            {\n                \"title\": \"Blog - Acme\",\n                \"url\": \"https://acme.com/blog/b-to-big-b-is-too-big/\",\n                \"durationInSecond\": 182,\n                \"events\": null,\n                \"id\": 952123136\n            },\n            {\n                \"title\": null,\n                \"url\": \"https://acme.com/blog/blog/b-to-big-b-is-bigger/\",\n                \"durationInSecond\": 1,\n                \"events\": null,\n                \"id\": 952008578\n            }\n        ],\n        \"referer\": {\n            \"idCategory\": \"social\",\n            \"name\": \"blog_amazon_en_twitter\"\n        },\n        \"idPerson\": null,\n        \"id\": 28212776\n    }",
           "type": "json"
         },
@@ -2284,27 +2859,47 @@
         "name": "user"
       }
     ],
-    "parameter": {
+    "description": "<p>Returns a list of visited pages overview for a specific account activity.</p>",
+    "success": {
       "fields": {
-        "Parameter": [
+        "Success 200": [
           {
-            "group": "Parameter",
-            "type": "Number",
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "url",
+            "description": "<p>The visited webpage url.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>The visited webpage title.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "visitCount",
+            "description": "<p>The number of visit on this webpage.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "averageVisitDurationInSecond",
+            "description": "<p>The average time spent in second on this webpage.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
             "optional": false,
             "field": "id",
-            "description": "<p>the account id</p>"
+            "description": "<p>The unique identifier for this website visit.</p>"
           }
         ]
-      }
-    },
-    "examples": [
-      {
-        "title": "cURL :",
-        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/visited-page/overview",
-        "type": "json"
-      }
-    ],
-    "success": {
+      },
       "examples": [
         {
           "title": "Success-Response:",
@@ -2313,6 +2908,45 @@
         }
       ]
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The account id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "from",
+            "description": "<p>A timestamp defining the bottom of the visited pages date range.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "to",
+            "description": "<p>A timestamp defining the top of the visited pages date range.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Basic endpoint usage : ",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/visited-page/overview",
+        "type": "curl"
+      },
+      {
+        "title": "Full endpoint usage with time filter :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/visited-page/overview?from=1430385808000&to=1490123408000",
+        "type": "curl"
+      }
+    ],
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/activity/AccountActivity.md",
     "groupTitle": "Activity",
     "sampleRequest": [
@@ -2347,27 +2981,46 @@
         "name": "user"
       }
     ],
-    "parameter": {
+    "description": "<p>Returns a list of referer overview for a specific account activity.</p>",
+    "success": {
       "fields": {
-        "Parameter": [
+        "Success 200": [
           {
-            "group": "Parameter",
-            "type": "Number",
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "\"advertising_display\"",
+              "\"affiliate\"",
+              "\"azalead_ad\"",
+              "\"direct\"",
+              "\"email\"",
+              "\"organic_search\"",
+              "\"others\"",
+              "\"paid_search\"",
+              "\"referral\"",
+              "\"social\"",
+              "\"social_ad\""
+            ],
             "optional": false,
-            "field": "id",
-            "description": "<p>the account id</p>"
+            "field": "idCategory",
+            "description": "<p>The unique identifier of the referer category.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The referer name.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "visitCount",
+            "description": "<p>The number of visit from this referer.</p>"
           }
         ]
-      }
-    },
-    "examples": [
-      {
-        "title": "cURL :",
-        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/referer",
-        "type": "json"
-      }
-    ],
-    "success": {
+      },
       "examples": [
         {
           "title": "Success-Response:",
@@ -2376,6 +3029,45 @@
         }
       ]
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The account id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "from",
+            "description": "<p>A timestamp defining the bottom of the referers date range.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "to",
+            "description": "<p>A timestamp defining the top of the referers date range.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Basic endpoint usage : ",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/referer",
+        "type": "curl"
+      },
+      {
+        "title": "Full endpoint usage with time filter :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/referer?from=1430385808000&to=1490123408000",
+        "type": "curl"
+      }
+    ],
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/activity/AccountActivity.md",
     "groupTitle": "Activity",
     "sampleRequest": [
@@ -2400,9 +3092,9 @@
   },
   {
     "type": "get",
-    "url": "/core/account/:id/event/type",
-    "title": "Account's events on visited pages",
-    "version": "0.27.0",
+    "url": "/core/account/:id/referer/category",
+    "title": "Account's traffic sources by category",
+    "version": "0.0.1",
     "name": "activity_5",
     "group": "Activity",
     "permission": [
@@ -2410,6 +3102,166 @@
         "name": "user"
       }
     ],
+    "description": "<p>Returns a list of referer category overview for a specific account activity.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "visitCount",
+            "description": "<p>The number of visit from this referer category.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "\"advertising_display\"",
+              "\"affiliate\"",
+              "\"azalead_ad\"",
+              "\"direct\"",
+              "\"email\"",
+              "\"organic_search\"",
+              "\"others\"",
+              "\"paid_search\"",
+              "\"referral\"",
+              "\"social\"",
+              "\"social_ad\""
+            ],
+            "optional": false,
+            "field": "id",
+            "description": "<p>The unique identifier of the referer category.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n   [\n       {\n           \"visitCount\": 0,\n           \"id\": \"social_ad\"\n       },\n       {\n           \"visitCount\": 6444,\n           \"id\": \"azalead_ad\"\n       },\n       {\n           \"visitCount\": 152,\n           \"id\": \"advertising_display\"\n       },\n       {\n           \"visitCount\": 0,\n           \"id\": \"referral\"\n       },\n       {\n           \"visitCount\": 0,\n           \"id\": \"email\"\n       },\n       {\n           \"visitCount\": 0,\n           \"id\": \"paid_search\"\n       },\n       {\n           \"visitCount\": 33,\n           \"id\": \"social\"\n       },\n       {\n           \"visitCount\": 0,\n           \"id\": \"organic_search\"\n       },\n       {\n           \"visitCount\": 396,\n           \"id\": \"direct\"\n       },\n       {\n           \"visitCount\": 0,\n           \"id\": \"affiliate\"\n       },\n       {\n           \"visitCount\": 201,\n           \"id\": \"others\"\n       }\n   ]",
+          "type": "json"
+        }
+      ]
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The account id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "from",
+            "description": "<p>A timestamp defining the bottom of the referers date range.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "to",
+            "description": "<p>A timestamp defining the top of the referers date range.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Basic endpoint usage : ",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/referer/category",
+        "type": "curl"
+      },
+      {
+        "title": "Full endpoint usage with time filter :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/referer/category?from=1430385808000&to=1490123408000",
+        "type": "curl"
+      }
+    ],
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/activity/AccountActivity.md",
+    "groupTitle": "Activity",
+    "sampleRequest": [
+      {
+        "url": "https://api.azalead.com/core/account/:id/referer/category"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/core/account/:id/event/type",
+    "title": "Account's events on visited pages",
+    "version": "0.27.0",
+    "name": "activity_6",
+    "group": "Activity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Returns a list of event overview made by visitors.</p>",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "allowedValues": [
+              "\"custom\"",
+              "\"link_clicked\"",
+              "\"form_completed\"",
+              "\"file_downloaded\"",
+              "\"live_chat\"",
+              "\"newsletter_signup\"",
+              "\"blog_comment\"",
+              "\"video_played\"",
+              "\"website_personalization\""
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>The event type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "eventCount",
+            "description": "<p>The number of event from this event type.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>The unique identifier of the event type.</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n   [\n      {\n        \"type\": \"download\",\n        \"eventCount\": 12,\n        \"id\": \"8e5380ec-dd1d-4e35-8eb7-a1053cd51a7a\"\n      },\n      {\n        \"type\": \"custom\",\n        \"eventCount\": 45,\n        \"id\": \"25519326-ffb8-4313-ba86-9c57527c20c5\"\n      }\n   ]",
+          "type": "json"
+        }
+      ]
+    },
     "parameter": {
       "fields": {
         "Parameter": [
@@ -2419,26 +3271,36 @@
             "optional": false,
             "field": "id",
             "description": "<p>the account id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "from",
+            "description": "<p>A timestamp defining the bottom of the events date range.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": true,
+            "field": "to",
+            "description": "<p>A timestamp defining the top of the events date range.</p>"
           }
         ]
       }
     },
     "examples": [
       {
-        "title": "cURL :",
+        "title": "Basic endpoint usage :",
         "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/event/type",
-        "type": "json"
+        "type": "curl"
+      },
+      {
+        "title": "Full endpoint usage with time filter :",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/event/type?from=1430385808000&to=1490123408000",
+        "type": "curl"
       }
     ],
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n   [\n      {\n        \"id\": \"8e5380ec-dd1d-4e35-8eb7-a1053cd51a7a\",\n        \"type\": \"download\",\n        \"eventCount\": 12\n      },\n      {\n        \"id\": \"25519326-ffb8-4313-ba86-9c57527c20c5\",\n        \"type\": \"custom\",\n        \"eventCount\": 45\n      }\n   ]",
-          "type": "json"
-        }
-      ]
-    },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/activity/AccountActivity.md",
     "groupTitle": "Activity",
     "sampleRequest": [
@@ -3061,6 +3923,63 @@
             "optional": false,
             "field": "id",
             "description": "<p>the account id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"state\": \"open\",\n    \"probabilityPercentage\": 50,\n    \"idUser\": 2375\n    \"id\": 2524\n   }\n  ]",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
+    "groupTitle": "Opportunity",
+    "sampleRequest": [
+      {
+        "url": "https://api.azalead.com/core/account/:id/opportunity"
+      }
+    ],
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/core/account/:id/opportunity",
+    "title": "Account's opportunities",
+    "version": "0.0.16",
+    "name": "account_opportunity_1",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Returns the opportunities linked to a specific account.</p>",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the account id</p>"
           },
           {
             "group": "Parameter",
@@ -3173,63 +4092,6 @@
           }
         ]
       }
-    },
-    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
-    "groupTitle": "Opportunity",
-    "sampleRequest": [
-      {
-        "url": "https://api.azalead.com/core/account/:id/opportunity"
-      }
-    ],
-    "header": {
-      "fields": {
-        "Header": [
-          {
-            "group": "Header",
-            "type": "String",
-            "optional": false,
-            "field": "X-Auth-token",
-            "defaultValue": "Bearer YOUR_TOKEN",
-            "description": ""
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "get",
-    "url": "/core/account/:id/opportunity",
-    "title": "Account's opportunities",
-    "version": "0.0.16",
-    "name": "account_opportunity_1",
-    "group": "Opportunity",
-    "permission": [
-      {
-        "name": "user"
-      }
-    ],
-    "description": "<p>Returns the opportunities linked to a specific account.</p>",
-    "parameter": {
-      "fields": {
-        "Parameter": [
-          {
-            "group": "Parameter",
-            "type": "number",
-            "optional": false,
-            "field": "id",
-            "description": "<p>the account id</p>"
-          }
-        ]
-      }
-    },
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"state\": \"open\",\n    \"probabilityPercentage\": 50,\n    \"idUser\": 2375\n    \"id\": 2524\n   }\n  ]",
-          "type": "json"
-        }
-      ]
     },
     "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
     "groupTitle": "Opportunity",
