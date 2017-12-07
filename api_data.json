@@ -2110,7 +2110,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "visitedPages",
-            "description": "<p>A list of visitedPage object representing the visited pages</p>"
+            "description": "<p>List of visitedPage object representing the visited pages sorted by url visit date in ascending order</p>"
           },
           {
             "group": "ad_clicked activity object",
@@ -2178,7 +2178,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "visitedPages",
-            "description": "<p>The list of pages visited after an ad click</p>"
+            "description": "<p>List of visitedPage object representing the visited pages sorted by url visit date in ascending order</p>"
           },
           {
             "group": "website_visit activity object",
@@ -2246,7 +2246,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "openers",
-            "description": "<p>List of opener objects</p>"
+            "description": "<p>List of opener objects sorted by activity date in ascending order</p>"
           },
           {
             "group": "email_viewed activity object",
@@ -2290,7 +2290,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "events",
-            "description": "<p>List of event objects related to the visit</p>"
+            "description": "<p>List of event objects related to the visit sorted by event date in ascending order</p>"
           },
           {
             "group": "visited_page object",
@@ -2320,7 +2320,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "content",
-            "description": "<p>The content/data of the event. Will consiste of a key/value json object varying in fonction of the event type.</p>"
+            "description": "<p>The content/data of the event. Will consist of a key/value json object varying in function of the event type.</p>"
           }
         ],
         "opener object": [
@@ -2329,7 +2329,7 @@
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>Email adress of the person who opened the email</p>"
+            "description": "<p>Email address of the person who opened the email</p>"
           },
           {
             "group": "opener object",
@@ -2343,14 +2343,14 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "\nHTTP/1.1 200 OK\n   [\n    {\n        \"type\": \"ad_clicked\",\n        \"date\": 1470388801000,\n        \"visitedPages\": [\n            {\n                \"title\": \"The Chaos of Buying in Industrial Manufacturing\",\n                \"url\": \"https://acme.com/blog/the-chaos-of-swimming-in-post-industrial-noise/\",\n                \"durationInSecond\": 7,\n                \"events\": [ {\n                  \"id\": \"5872fc92-a1c4-41cf-a976-b89f516ac1d9\",\n                  \"type\": \"link_clicked\",\n                  \"content\": {\n                    \"url\": \"/summer-webinar\"\n                  }\n                }],\n                \"id\": 8941287\n            },\n            {\n                \"title\": \"Product X\",\n                \"url\": \"http://acme.com/product/\",\n                \"durationInSecond\": 10,\n                \"events\": [],\n                \"id\": 8941286\n            }\n        ],\n        \"referer\": {\n            \"idCategory\": \"azalead_ad\",\n            \"name\": \"acme-en-theb2bchaos\"\n        },\n        \"idPerson\": \"089be716-2a0e-49fc-b485-d94655df65bf\",\n        \"campaignName\": \"acme-en-theb2bchaos\",\n        \"id\": 4639547\n    },\n    {\n        \"type\": \"email_viewed\",\n        \"date\": 1470273901000,\n        \"openers\": [\n            {\n                \"email\": \"faye.valentine@bebop.com\",\n                \"openDate\": \"2016-08-04T01:25:01\"\n            }\n        ],\n        \"campaignName\": \"Email White Paper\",\n        \"id\": 4638973\n    },\n    {\n        \"type\": \"website_visit\",\n        \"date\": 1507884678000,\n        \"visitedPages\": [\n            {\n                \"title\": \"Blog - Acme\",\n                \"url\": \"https://acme.com/blog/b-to-big-b-is-too-big/\",\n                \"durationInSecond\": 182,\n                \"events\": null,\n                \"id\": 952123136\n            },\n            {\n                \"title\": null,\n                \"url\": \"https://acme.com/blog/blog/b-to-big-b-is-bigger/\",\n                \"durationInSecond\": 1,\n                \"events\": null,\n                \"id\": 952008578\n            }\n        ],\n        \"referer\": {\n            \"idCategory\": \"social\",\n            \"name\": \"blog_amazon_en_twitter\"\n        },\n        \"idPerson\": null,\n        \"id\": 28212776\n    }\n   ]",
+          "content": "\nHTTP/1.1 200 OK\n   [\n    {\n        \"type\": \"ad_clicked\",\n        \"date\": 1470388801000,\n        \"visitedPages\": [\n            {\n                \"title\": \"The Chaos of Buying in Industrial Manufacturing\",\n                \"url\": \"https://acme.com/blog/the-chaos-of-swimming-in-post-industrial-noise/\",\n                \"durationInSecond\": 7,\n                \"events\": [ {\n                  \"id\": \"5872fc92-a1c4-41cf-a976-b89f516ac1d9\",\n                  \"type\": \"link_clicked\",\n                  \"content\": {\n                    \"url\": \"/summer-webinar\"\n                  }\n                }],\n                \"id\": 8941287\n            },\n            {\n                \"title\": \"Product X\",\n                \"url\": \"http://acme.com/product/\",\n                \"durationInSecond\": 10,\n                \"events\": [],\n                \"id\": 8941286\n            }\n        ],\n        \"referer\": {\n            \"idCategory\": \"azalead_ad\",\n            \"name\": \"acme-en-theb2bchaos\"\n        },\n        \"idPerson\": \"089be716-2a0e-49fc-b485-d94655df65bf\",\n        \"campaignName\": \"acme-en-theb2bchaos\",\n        \"id\": 4639547\n    },\n    {\n        \"type\": \"email_viewed\",\n        \"date\": 1470273901000,\n        \"openers\": [\n            {\n                \"email\": \"faye.valentine@bebop.com\",\n                \"openDate\": \"1425970856000\"\n            }\n        ],\n        \"campaignName\": \"Email White Paper\",\n        \"id\": 4638973\n    },\n    {\n        \"type\": \"website_visit\",\n        \"date\": 1507884678000,\n        \"visitedPages\": [\n            {\n                \"title\": \"Blog - Acme\",\n                \"url\": \"https://acme.com/blog/b-to-big-b-is-too-big/\",\n                \"durationInSecond\": 182,\n                \"events\": null,\n                \"id\": 952123136\n            },\n            {\n                \"title\": null,\n                \"url\": \"https://acme.com/blog/blog/b-to-big-b-is-bigger/\",\n                \"durationInSecond\": 1,\n                \"events\": null,\n                \"id\": 952008578\n            }\n        ],\n        \"referer\": {\n            \"idCategory\": \"social\",\n            \"name\": \"blog_amazon_en_twitter\"\n        },\n        \"idPerson\": null,\n        \"id\": 28212776\n    }\n   ]",
           "type": "json"
         }
       ]
     },
     "examples": [
       {
-        "title": "Basic enpoint usage using account identifier:",
+        "title": "Basic endpoint usage using account identifier:",
         "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.azalead.com/core/account/123456/activity",
         "type": "curl"
       },
@@ -2414,7 +2414,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n   [\n    {\n        \"type\": \"ad_clicked\",\n        \"date\": 1470388801000,\n        \"visitedPages\": [\n            {\n                \"url\": \"http://acme.com/pricing/\",\n                \"durationInSecond\": 7,\n                \"id\": 8941287,\n                \"events\": [\n                  {\n                    \"id\": \"8e5380ec-dd1d-4e35-8eb7-a1053cd51a7a\",\n                    \"type\": \"download\",\n                    \"content\": {\n                      \"type\": \"download\",\n                      \"url\": \"http://acme.com/pricing/pricing.pdf\"\n                    }\n                  },\n                  {\n                    \"id\": \"25519326-ffb8-4313-ba86-9c57527c20c5\",\n                    \"type\": \"custom\",\n                    \"content\": {\n                      \"type\": \"product_view\",\n                      \"product_id\": \"AZ42567\"\n                    }\n                  }\n                ]\n            },\n            {\n                \"url\": \"http://acme.com/product/\",\n                \"durationInSecond\": 10,\n                \"id\": 8941286\n            }\n        ],\n        \"referer\": {\n            \"idCategory\": \"paid_search\",\n            \"name\": \"azalead ad nurturing ABR Case Study\"\n        },\n        \"idPerson\": \"ba1102bf-68f2-41b5-ad08-b836eebe2551\",\n        \"campaignName\": null,\n        \"id\": 4639547\n    },\n    {\n        \"type\": \"email_viewed\",\n        \"date\": 1470273901000,\n        \"openers\": [\n            {\n                \"email\": \"faye.valentine@bebop.com\",\n                \"openDate\": \"2016-08-04T01:25:01\"\n            }\n        ],\n        \"campaignName\": \"Email White Paper\",\n        \"id\": 4638973\n    }\n   ]",
+          "content": "HTTP/1.1 200 OK\n   [\n    {\n        \"type\": \"ad_clicked\",\n        \"date\": 1470388801000,\n        \"visitedPages\": [\n            {\n                \"url\": \"http://acme.com/pricing/\",\n                \"durationInSecond\": 7,\n                \"id\": 8941287,\n                \"events\": [\n                  {\n                    \"id\": \"8e5380ec-dd1d-4e35-8eb7-a1053cd51a7a\",\n                    \"type\": \"download\",\n                    \"content\": {\n                      \"type\": \"download\",\n                      \"url\": \"http://acme.com/pricing/pricing.pdf\"\n                    }\n                  },\n                  {\n                    \"id\": \"25519326-ffb8-4313-ba86-9c57527c20c5\",\n                    \"type\": \"custom\",\n                    \"content\": {\n                      \"type\": \"product_view\",\n                      \"product_id\": \"AZ42567\"\n                    }\n                  }\n                ]\n            },\n            {\n                \"url\": \"http://acme.com/product/\",\n                \"durationInSecond\": 10,\n                \"id\": 8941286\n            }\n        ],\n        \"referer\": {\n            \"idCategory\": \"paid_search\",\n            \"name\": \"azalead ad nurturing ABR Case Study\"\n        },\n        \"idPerson\": \"ba1102bf-68f2-41b5-ad08-b836eebe2551\",\n        \"campaignName\": null,\n        \"id\": 4639547\n    },\n    {\n        \"type\": \"email_viewed\",\n        \"date\": 1470273901000,\n        \"openers\": [\n            {\n                \"email\": \"faye.valentine@bebop.com\",\n                \"openDate\": \"1425970856000\"\n            }\n        ],\n        \"campaignName\": \"Email White Paper\",\n        \"id\": 4638973\n    }\n   ]",
           "type": "json"
         }
       ]
@@ -2499,7 +2499,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "visitedPages",
-            "description": "<p>A list of visitedPage object representing the visited pages</p>"
+            "description": "<p>List of visitedPage object representing the visited pages sorted by url visit date in ascending order</p>"
           },
           {
             "group": "ad_clicked activity object",
@@ -2567,7 +2567,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "visitedPages",
-            "description": "<p>The list of pages visited after an ad click</p>"
+            "description": "<p>List of visitedPage object representing the visited pages sorted by url visit date in ascending order</p>"
           },
           {
             "group": "website_visit activity object",
@@ -2596,13 +2596,6 @@
             "optional": false,
             "field": "idPerson",
             "description": "<p>The id of the person linked to the activity</p>"
-          },
-          {
-            "group": "website_visit activity object",
-            "type": "String",
-            "optional": false,
-            "field": "campaignName",
-            "description": "<p>The name of the campaign that generated the click</p>"
           },
           {
             "group": "website_visit activity object",
@@ -2635,7 +2628,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "openers",
-            "description": "<p>List of opener objects</p>"
+            "description": "<p>List of opener objects sorted by activity date in ascending order</p>"
           },
           {
             "group": "email_viewed activity object",
@@ -2679,7 +2672,7 @@
             "type": "Object[]",
             "optional": false,
             "field": "events",
-            "description": "<p>List of event objects related to the visit</p>"
+            "description": "<p>List of event objects related to the visit sorted by event date in ascending order</p>"
           },
           {
             "group": "visited_page object",
@@ -2732,7 +2725,7 @@
       "examples": [
         {
           "title": "Success-Response email_viewed activity:",
-          "content": "HTTP/1.1 200 OK\n    {\n        \"type\": \"email_viewed\",\n        \"date\": 1470273901000,\n        \"openers\": [\n            {\n                \"email\": \"faye.valentine@bebop.com\",\n                \"openDate\": \"2016-08-04T01:25:01\"\n            }\n        ],\n        \"campaignName\": \"Email White Paper\",\n        \"id\": 4638973\n    }",
+          "content": "HTTP/1.1 200 OK\n    {\n        \"type\": \"email_viewed\",\n        \"date\": 1470273901000,\n        \"openers\": [\n            {\n                \"email\": \"faye.valentine@bebop.com\",\n                \"openDate\": \"1425970856000\"\n            }\n        ],\n        \"campaignName\": \"Email White Paper\",\n        \"id\": 4638973\n    }",
           "type": "json"
         },
         {
