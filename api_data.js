@@ -14,7 +14,7 @@ define({ "api": [
     "description": "<p>Returns a paginated list of accounts order by last activity date by default. An account contains detailed company data, activity overview, list qualification and a score.</p> <p>This endpoint helps retrieve:</p> <ul> <li>Last active accounts in general</li> <li>Last active accounts in target account list</li> <li>A list of accounts that clicked on your ad or visited your website</li> <li>The list of accounts in your blacklist</li> <li>The list of accounts with alerts...</li> </ul> <p><em>Note on filtering accounts behavior:</em></p> <p>The list of account can be filtered on the following boolean attributes: <code>target</code>, <code>isp</code>, <code>blacklist</code> and <code>alert</code>. They are used to include or exclude accounts based on those attributes. When one of these attributes is set to false the list will contain <strong>only</strong> accounts with this attribute set to false. While when set to true, the list of account will contain all accounts with <strong>at least one</strong> of the attributes set to true.</p> <p>For instance <code>/account?target=false&amp;alert=false&amp;blacklist=true&amp;isp=true</code> will return all accounts including only blacklisted (<code>blacklist=true</code>) and reported as ISP (<code>isp=true</code>) but excluding target accounts (<code>target=false</code>) and account with subscribed alert (<code>alert=false</code>).</p> <p>By default <code>isp</code> and <code>blacklist</code> are excluded.</p>",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/account?page=:page&size=:size&sort=:sort&dir=:dir&filter=:filter&target=:target&alert=:alert&blacklist=:blacklist&isp=:isp&labels=:labels"
+        "url": "https://api.azalead.com/core/account?page=:page&size=:size&sort=:sort&dir=:dir&filter=:filter&target=:target&alert=:alert&blacklist=:blacklist&isp=:isp&labels=:labels&from=:from&to=:to"
       }
     ],
     "parameter": {
@@ -2018,7 +2018,7 @@ define({ "api": [
     "description": "<p>Returns a list of activities for a given account. The activities will be returned in reverse chronological order.</p> <p>This API allow pagination, time based filtering and type based filtering.</p> <p>The objects contained in the list can have different data types (website_visit, ad_clicked and email_viewed).</p>",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/account/123456/activity?page=:page&size=:size&from=:from&to=:to&types=:types"
+        "url": "https://api.azalead.com/core/account/123456/activity?page=:page&size=:size&from=:from&to=:to&types=:types"
       }
     ],
     "parameter": {
@@ -3518,7 +3518,7 @@ define({ "api": [
     "description": "<p>Returns the list of labels.</p>",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/label"
+        "url": "https://api.azalead.com/core/label"
       }
     ],
     "success": {
@@ -3587,7 +3587,7 @@ define({ "api": [
     "description": "<p>Returns a single label.</p>",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/label/:id"
+        "url": "https://api.azalead.com/core/label/:id"
       }
     ],
     "success": {
@@ -3656,7 +3656,7 @@ define({ "api": [
     "description": "<p>Add a new label.</p>",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/label"
+        "url": "https://api.azalead.com/core/label"
       }
     ],
     "parameter": {
@@ -3738,7 +3738,7 @@ define({ "api": [
     "description": "<p>Update a label.</p>",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/label/:id"
+        "url": "https://api.azalead.com/core/label/:id"
       }
     ],
     "parameter": {
@@ -3827,7 +3827,7 @@ define({ "api": [
     "description": "<p>Delete a label.</p>",
     "sampleRequest": [
       {
-        "url": "https://api.azalead.com/label/:id"
+        "url": "https://api.azalead.com/core/label/:id"
       }
     ],
     "parameter": {
