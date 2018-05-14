@@ -1,10 +1,10 @@
-Azalead provides a REST API. This API is the best way to integrate with your marketing automation, your CRM or your content management system.
-Azalead API exposes endpoints to follow your account’s activities, manage your account lists and administrate your Azalead organization.
+Jabmo provides a REST API. This API is the best way to integrate with your marketing automation, your CRM or your content management system.
+Jabmo API exposes endpoints to follow your account’s activities, manage your account lists and administrate your Jabmo organization.
 <br/><br/>
-Before diving into the endpoints below, developers can read our <a href="https://developers.azalead.com/rest-api-getting-started" target="_parent">"Getting Started"</a> section for an overview of high-level concepts as well as some use cases.
+Before diving into the endpoints below, developers can read our <a href="https://developers.jabmo.com/tutorials/make-your-first-call-to-the-jabmo-rest-api/" target="_parent">"Getting Started"</a> section for an overview of high-level concepts as well as some use cases.
 
 ## Overview
-<br/>Use of this API requires an <a href="http://go.azalead.com/l/85062/2015-09-23/bqfw7" target="_blank">Azalead user account.</a>
+<br/>Use of this API requires a <a href="https://jabmo.com/free-trial/?utm_source=Dev+Portal&utm_medium=Referral" target="_blank">Jabmo user account.</a>
 
 <span id="api-_-BaseURL"/>
 
@@ -12,7 +12,7 @@ Before diving into the endpoints below, developers can read our <a href="https:/
 All URLs referenced in the documentation have the following base:
 
 ````
-https://api.azalead.com/latest
+https://api.jabmo.com/latest
 ````
 
 <span id="api-_-Schema"/>
@@ -30,11 +30,11 @@ https://api.azalead.com/latest
 <span id="api-_-Request"/>
 
 ### Request
-> All requests to Azalead's REST API require you to authenticate.
+> All requests to Jabmo's REST API require you to authenticate.
 
 #### HTTP Verbs
 
-Where possible, Azalead api strives to use the appropriate HTTP verb to each action :
+Where possible, Jabmo api strives to use the appropriate HTTP verb to each action :
 
 | **Verb**    | **Description** |
 | ----------- |----------------------------------------|
@@ -98,7 +98,7 @@ HTTP/1.1 403 Forbidden
 }
 ````
 
--   `400 Bad Request`  
+-   `400 Bad Request`
 
 ````JSON
 HTTP/1.1 400 Bad Request
@@ -147,6 +147,6 @@ HTTP/1.1 500 Internal Server Error
 
 ### Getting help
 
-Having trouble with Azalead api ? We can help!
+Having trouble with Jabmo api ? We can help!
 -   Ask a question - we are on <a href="https://gitter.im/azalead/azalead-api" target="_blank">gitter</a>.
 -   Found a bug ?  <a href="https://github.com/Azalead/azalead.github.io/issues" target="_blank">let us know</a>.

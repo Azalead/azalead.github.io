@@ -744,7 +744,7 @@ require([
     }
 
     /**
-    *  ADDED FOR AZALEAD
+    *  ADDED FOR JABMO
     */
 
     $('input[placeholder=Content-type].sample-request-header').val('application/json;charset=UTF-8');
