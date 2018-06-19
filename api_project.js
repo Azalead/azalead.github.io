@@ -1,6 +1,6 @@
 define({
   "name": "REST API",
-  "version": "0.28.0",
+  "version": "0.29.1",
   "description": "Jabmo REST API documentation",
   "title": "Jabmo REST API",
   "url": "https://api.jabmo.com",
@@ -87,7 +87,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-06-18T08:21:50.705Z",
+    "time": "2018-06-19T08:57:56.979Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

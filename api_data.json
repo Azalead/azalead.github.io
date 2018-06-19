@@ -3729,6 +3729,170 @@
     "type": "get",
     "url": "/latest/account/:id/opportunity",
     "title": "Account's opportunities",
+    "version": "0.29.1",
+    "name": "account_opportunity_1",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Returns the opportunities linked to a specific account.</p>",
+    "sampleRequest": [
+      {
+        "url": "https://api.jabmo.com/latest/account/:id/opportunity?closed=:closed&won=:won"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>the account id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "closed",
+            "description": "<p>filters on closed status</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "won",
+            "description": "<p>filters on won status</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Get all opportunities for the given account.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.jabmo.com/latest/account/1837/opportunity",
+        "type": "curl"
+      },
+      {
+        "title": "Get all open opportunities for the given account.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.jabmo.com/latest/account/1837/opportunity?closed=false&won=false",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"owner\": \"Brandon McClaine\",\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\"\n    }\n  ]",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>The id of the associated account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "owner",
+            "description": "<p>The owner of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
+    "groupTitle": "Opportunity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/latest/account/:id/opportunity",
+    "title": "Account's opportunities",
     "version": "0.0.16",
     "name": "account_opportunity_1",
     "group": "Opportunity",
@@ -3766,6 +3930,13 @@
             "optional": true,
             "field": "won",
             "description": "<p>filters on won status</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
           }
         ]
       }
@@ -3786,7 +3957,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\"\n    }\n  ]",
+          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"Opportunity 2533639\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\",\n    \"externalAccount\": \"PROCTER & GAMBLE CO\"\n    }\n  ]",
           "type": "json"
         }
       ],
@@ -3886,6 +4057,158 @@
     "type": "get",
     "url": "/latest/account/:idAccount/opportunity/:idOpportunity",
     "title": "Account's opportunity",
+    "version": "0.29.1",
+    "name": "account_opportunity_2",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Returns a specific opportunity for a specific account.</p>",
+    "sampleRequest": [
+      {
+        "url": "https://api.jabmo.com/latest/account/:idAccount/opportunity/:idOpportunity"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>the account id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "idOpportunity",
+            "description": "<p>the opportunity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Get a specific opportunity by id for a given account.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.jabmo.com/latest/account/1837/opportunity/2524",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"Opportunity 2533639PROCTER & GAMBLE CO\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"owner\": \"Brandon McClaine\",\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\",\n    \"externalAccount\": \"PROCTER & GAMBLE CO\"\n    }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>The id of the associated account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "owner",
+            "description": "<p>The owner of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
+    "groupTitle": "Opportunity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/latest/account/:idAccount/opportunity/:idOpportunity",
+    "title": "Account's opportunity",
     "version": "0.0.16",
     "name": "account_opportunity_2",
     "group": "Opportunity",
@@ -3916,6 +4239,13 @@
             "optional": false,
             "field": "idOpportunity",
             "description": "<p>the opportunity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
           }
         ]
       }
@@ -3931,7 +4261,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\"\n    }",
+          "content": "HTTP/1.1 200 OK\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"Opportunity 2533639\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\",\n    \"externalAccount\": \"PROCTER & GAMBLE CO\"\n    }",
           "type": "json"
         }
       ],
@@ -4031,6 +4361,216 @@
     "type": "post",
     "url": "/latest/account/:id/opportunity",
     "title": "Add an account's opportunity",
+    "version": "0.29.1",
+    "name": "account_opportunity_3",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>This endpoint is to add an opportunity to a specific account.</p>",
+    "sampleRequest": [
+      {
+        "url": "https://api.jabmo.com/latest/account/:id/opportunity/"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "timestamps",
+            "optional": false,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>The id of the associated account.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "owner",
+            "defaultValue": "authenticated user name",
+            "description": "<p>The owner of the opportunity. Only an administrator can specify this field. If not specified the authenticated user is used.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n      \"dealSize\": 85000,\n      \"closedDate\": 1471478400000,\n      \"name\": \"Opportunity 2533639\",\n      \"probabilityPercentage\": 50,\n      \"closed\": false,\n      \"won\": false,\n      \"owner\": \"Brandon McClaine\",\n      \"idAccount\": 1837,\n      \"id\": 2524,\n      \"source\": \"salesforce\",\n      \"externalId\": \"003a000300OH9mFRRO\",\n      \"externalAccount\": \"PROCTER & GAMBLE CO\"\n      }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>The id of the associated account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "owner",
+            "description": "<p>The owner of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
+    "groupTitle": "Opportunity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-type",
+            "defaultValue": "application/json",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "post",
+    "url": "/latest/account/:id/opportunity",
+    "title": "Add an account's opportunity",
     "version": "0.0.16",
     "name": "account_opportunity_3",
     "group": "Opportunity",
@@ -4118,6 +4658,13 @@
             "optional": true,
             "field": "externalId",
             "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
           }
         ]
       }
@@ -4126,7 +4673,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n     {\n      \"dealSize\": 85000,\n      \"closedDate\": 1471478400000,\n      \"name\": \"PROCTER & GAMBLE CO\",\n      \"probabilityPercentage\": 50,\n      \"closed\": false,\n      \"won\": false,\n      \"idUser\": 2375,\n      \"idAccount\": 1837,\n      \"id\": 2524,\n      \"source\": \"salesforce\",\n      \"externalId\": \"003a000300OH9mFRRO\"\n      }",
+          "content": "HTTP/1.1 200 OK\n     {\n      \"dealSize\": 85000,\n      \"closedDate\": 1471478400000,\n      \"name\": \"Opportunity 2533639\",\n      \"probabilityPercentage\": 50,\n      \"closed\": false,\n      \"won\": false,\n      \"idUser\": 2375,\n      \"idAccount\": 1837,\n      \"id\": 2524,\n      \"source\": \"salesforce\",\n      \"externalId\": \"003a000300OH9mFRRO\",\n      \"externalAccount\": \"PROCTER & GAMBLE CO\"\n      }",
           "type": "json"
         }
       ],
@@ -4187,6 +4734,229 @@
             "optional": true,
             "field": "idUser",
             "description": "<p>The id of the user assigned to the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
+    "groupTitle": "Opportunity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-type",
+            "defaultValue": "application/json",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "patch",
+    "url": "/latest/account/:idAccount/opportunity/:idOpportunity",
+    "title": "Update an account's opportunity",
+    "version": "0.29.1",
+    "name": "account_opportunity_4",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>This endpoint is to update a specific opportunity for a specific account.</p>",
+    "sampleRequest": [
+      {
+        "url": "https://api.jabmo.com/latest/account/:idAccount/opportunity/:idOpportunity"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>the account id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "idOpportunity",
+            "description": "<p>the opportunity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "timestamps",
+            "optional": true,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": true,
+            "field": "owner",
+            "description": "<p>The owner of the opportunity. Only an administrator can specify this field.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Move the opportunity to another account and change its probability.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.jabmo.com/latest/account/1837/opportunity  -d { \"idAccount\": 1643, \"probabilityPercentage\": 70 }'",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n     {\n      \"dealSize\": 85000,\n      \"closedDate\": 1471478400000,\n      \"name\": \"Opportunity 2533639\",\n      \"probabilityPercentage\": 70,\n      \"closed\": false,\n      \"won\": false,\n      \"owner\": \"Brandon McClaine\",\n      \"idAccount\": 1434,\n      \"id\": 2524,\n      \"source\": \"salesforce\",\n      \"externalId\": \"003a000300OH9mFRRO\",\n      \"externalAccount\": \"PROCTER & GAMBLE CO\"\n      }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>The id of the associated account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "owner",
+            "description": "<p>The owner of the opportunity.</p>"
           },
           {
             "group": "Success 200",
@@ -4327,6 +5097,13 @@
             "optional": true,
             "field": "externalId",
             "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
           }
         ]
       }
@@ -4342,7 +5119,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n       {\n        \"dealSize\": 85000,\n        \"closedDate\": 1471478400000,\n        \"name\": \"PROCTER & GAMBLE CO\",\n        \"probabilityPercentage\": 70,\n        \"closed\": false,\n        \"won\": false,\n        \"idUser\": 2375,\n        \"idAccount\": 1434,\n        \"id\": 2524,\n        \"source\": \"salesforce\",\n        \"externalId\": \"003a000300OH9mFRRO\"\n        }",
+          "content": "HTTP/1.1 200 OK\n       {\n        \"dealSize\": 85000,\n        \"closedDate\": 1471478400000,\n        \"name\": \"Opportunity 2533639\",\n        \"probabilityPercentage\": 70,\n        \"closed\": false,\n        \"won\": false,\n        \"idUser\": 2375,\n        \"idAccount\": 1434,\n        \"id\": 2524,\n        \"source\": \"salesforce\",\n        \"externalId\": \"003a000300OH9mFRRO\",\n        \"externalAccount\": \"PROCTER & GAMBLE CO\"\n        }",
           "type": "json"
         }
       ],
@@ -4450,6 +5227,159 @@
     "type": "delete",
     "url": "/latest/account/:idAccount/opportunity/:idOpportunity",
     "title": "Remove an account's opportunity",
+    "version": "0.29.1",
+    "name": "account_opportunity_5",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>This endpoint is to delete a specific opportunity for a specific account.</p>",
+    "sampleRequest": [
+      {
+        "url": "https://api.jabmo.com/latest/account/:idAccount/opportunity/:idOpportunity"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>the account id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "idOpportunity",
+            "description": "<p>the opportunity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"Opportunity 2533639\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"owner\": \"Brandon McClaine\",\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\",\n    \"externalAccount\": \"PROCTER & GAMBLE CO\"\n    }",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>The id of the associated account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "owner",
+            "description": "<p>The owner of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/account/opportunity/AccountOpportunity.md",
+    "groupTitle": "Opportunity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          },
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Content-type",
+            "defaultValue": "application/json",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "delete",
+    "url": "/latest/account/:idAccount/opportunity/:idOpportunity",
+    "title": "Remove an account's opportunity",
     "version": "0.0.16",
     "name": "account_opportunity_5",
     "group": "Opportunity",
@@ -4480,6 +5410,13 @@
             "optional": false,
             "field": "idOpportunity",
             "description": "<p>the opportunity id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
           }
         ]
       }
@@ -4488,7 +5425,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\"\n    }",
+          "content": "HTTP/1.1 200 OK\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"Opportunity 2533639\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\",\n    \"externalAccount\": \"PROCTER & GAMBLE CO\"\n    }",
           "type": "json"
         }
       ],
@@ -4596,6 +5533,163 @@
     "type": "get",
     "url": "/latest/opportunity",
     "title": "All opportunities",
+    "version": "0.29.1",
+    "name": "opportunity_1",
+    "group": "Opportunity",
+    "permission": [
+      {
+        "name": "user"
+      }
+    ],
+    "description": "<p>Returns the list of all your opportunities. Opportunities can be filtered by closed and won status.</p>",
+    "sampleRequest": [
+      {
+        "url": "https://api.jabmo.com/latest/opportunity?closed=:closed&won=:won"
+      }
+    ],
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "closed",
+            "description": "<p>filters on closed status</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": true,
+            "field": "won",
+            "description": "<p>filters on won status</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "examples": [
+      {
+        "title": "Get all opportunities.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.jabmo.com/latest/opportunity",
+        "type": "curl"
+      },
+      {
+        "title": "Get all open opportunities.",
+        "content": "curl -H \"X-Auth-token:Bearer YOUR_TOKEN\"  https://api.jabmo.com/latest/opportunity?closed=false&won=false",
+        "type": "curl"
+      }
+    ],
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"Opportunity 2533639\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"owner\": \"Brandon McClaine\",\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\",\n    \"externalAccount\": \"PROCTER & GAMBLE CO\"\n    }\n  ]",
+          "type": "json"
+        }
+      ],
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "dealSize",
+            "description": "<p>The money value of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "timestamps",
+            "optional": false,
+            "field": "closedDate",
+            "description": "<p>The opportunity closed date.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>The name of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "probabilityPercentage",
+            "description": "<p>The probability of closing in percents.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "closed",
+            "description": "<p>Specifies if the opportunity is closed.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "won",
+            "description": "<p>Specifies if the opportunity is won.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "idAccount",
+            "description": "<p>The id of the associated account.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "owner",
+            "description": "<p>The owner of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "source",
+            "description": "<p>The source of the opportunity.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": true,
+            "field": "externalId",
+            "description": "<p>Specifies the key of the opportunity in the external source system.</p>"
+          }
+        ]
+      }
+    },
+    "filename": "src/main/java/com/azalead/api/endpoint/core/opportunity/Opportunity.md",
+    "groupTitle": "Opportunity",
+    "header": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "X-Auth-token",
+            "defaultValue": "Bearer YOUR_TOKEN",
+            "description": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "get",
+    "url": "/latest/opportunity",
+    "title": "All opportunities",
     "version": "0.0.16",
     "name": "opportunity_1",
     "group": "Opportunity",
@@ -4626,6 +5720,13 @@
             "optional": true,
             "field": "won",
             "description": "<p>filters on won status</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "externalAccount",
+            "description": "<p>Specifies the name of the account in the external source system.</p>"
           }
         ]
       }
@@ -4646,7 +5747,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"PROCTER & GAMBLE CO\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\"\n    }\n  ]",
+          "content": "HTTP/1.1 200 OK\n  [\n   {\n    \"dealSize\": 85000,\n    \"closedDate\": 1471478400000,\n    \"name\": \"Opportunity 2533639\",\n    \"probabilityPercentage\": 50,\n    \"closed\": false,\n    \"won\": false,\n    \"idUser\": 2375,\n    \"idAccount\": 1837,\n    \"id\": 2524,\n    \"source\": \"salesforce\",\n    \"externalId\": \"003a000300OH9mFRRO\",\n    \"externalAccount\": \"PROCTER & GAMBLE CO\"\n    }\n  ]",
           "type": "json"
         }
       ],
